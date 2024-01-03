@@ -1,28 +1,25 @@
-import {
-  EmitterSubscription,
-  NativeEventEmitter,
-  NativeModules,
-} from 'react-native';
-import PlaybackStatus from '../types/playback-status';
-import Song from '../types/song';
+import type { EmitterSubscription } from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+import type PlaybackStatus from '../types/playback-status';
+import type Song from '../types/song';
 
-const {MusicModule} = NativeModules;
+const { MusicModule } = NativeModules;
 
-interface PlaybackState {
+interface IPlaybackState {
   currentSong: Song;
   playbackRate: number;
   playbackStatus: PlaybackStatus;
 }
 
-interface PlayerEvents {
-  onPlaybackStateChange: PlaybackState;
+interface IPlayerEvents {
+  onPlaybackStateChange: IPlaybackState;
   onCurrentSongChange: Song;
 }
 
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);
 
 // Initialize a structure to keep track of listeners
-const eventListeners: Record<keyof PlayerEvents, Set<EmitterSubscription>> = {
+const eventListeners: Record<keyof IPlayerEvents, Set<EmitterSubscription>> = {
   onPlaybackStateChange: new Set(),
   onCurrentSongChange: new Set(),
 };
@@ -60,7 +57,7 @@ class Player {
    * Retrieves the current playback state from the native music player.
    * @param {function(PlaybackState):void} callback - The callback function to handle the playback state.
    */
-  public static getCurrentState(callback: (state: PlaybackState) => void) {
+  public static getCurrentState(callback: (state: IPlaybackState) => void) {
     MusicModule.getCurrentState(callback);
   }
 
@@ -71,11 +68,13 @@ class Player {
    * @returns An EmitterSubscription which can be used to remove the listener.
    */
   public static addListener(
-    eventType: keyof PlayerEvents,
+    eventType: keyof IPlayerEvents,
     listener: (eventData: any) => void,
   ): EmitterSubscription {
     const subscription = nativeEventEmitter.addListener(eventType, listener);
+
     eventListeners[eventType].add(subscription);
+
     return subscription;
   }
 
@@ -85,7 +84,8 @@ class Player {
    */
   public static removeListener(subscription: EmitterSubscription) {
     subscription.remove();
-    const eventType = subscription.eventType as keyof PlayerEvents;
+    const eventType = subscription.eventType as keyof IPlayerEvents;
+
     if (eventListeners[eventType]) {
       eventListeners[eventType].delete(subscription);
     }
@@ -95,8 +95,8 @@ class Player {
    * Method to remove all listeners for a specific event type.
    * @param eventType - Type of the event to remove listeners for.
    */
-  public static removeAllListeners(eventType: keyof PlayerEvents) {
-    eventListeners[eventType].forEach(subscription => {
+  public static removeAllListeners(eventType: keyof IPlayerEvents) {
+    eventListeners[eventType].forEach((subscription) => {
       subscription.remove();
     });
     eventListeners[eventType].clear();

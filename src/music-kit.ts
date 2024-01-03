@@ -1,10 +1,10 @@
-import {NativeModules} from 'react-native';
-import Song from '../types/song';
-import CatalogSearchType from '../types/catalog-search-type';
+import { NativeModules } from 'react-native';
+import type CatalogSearchType from '../types/catalog-search-type';
+import type Song from '../types/song';
 
-const {MusicModule} = NativeModules;
+const { MusicModule } = NativeModules;
 
-interface EndlessListOptions {
+interface IEndlessListOptions {
   offset?: number;
   limit?: number;
 }
@@ -20,20 +20,16 @@ class MusicKit {
   public static async catalogSearch(
     search: string,
     types: CatalogSearchType[],
-    options?: EndlessListOptions,
+    options?: IEndlessListOptions,
   ) {
     try {
-      const response: {results: Song[]} = await MusicModule.catalogSearch(
-        search,
-        types,
-        options,
-      );
+      const response: { results: Song[] } = await MusicModule.catalogSearch(search, types, options);
 
       if (response.results) {
         return response.results;
-      } else {
-        throw new Error('Entities not found');
       }
+
+      throw new Error('Entities not found');
     } catch (error) {
       console.log('Error: ', error);
     }

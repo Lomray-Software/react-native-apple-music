@@ -1,6 +1,6 @@
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 
-const {MusicModule} = NativeModules;
+const { MusicModule } = NativeModules;
 
 enum AuthStatus {
   AUTHORIZED = 'authorized',
@@ -10,7 +10,7 @@ enum AuthStatus {
   UNKNOWN = 'unknown',
 }
 
-interface CheckSubscriptionResult {
+interface ISubscriptionResult {
   canPlayCatalogContent: boolean;
   hasCloudLibraryEnabled: boolean;
 }
@@ -26,12 +26,11 @@ class Auth {
 
   /**
    * Checks the user's subscription status for Apple Music.
-   * @returns {Promise<CheckSubscriptionResult>} A promise that resolves to the subscription status.
+   * @returns {Promise<ISubscriptionResult>} A promise that resolves to the subscription status.
    */
-  public static async checkSubscription(): Promise<CheckSubscriptionResult> {
+  public static async checkSubscription(): Promise<ISubscriptionResult> {
     try {
-      const result: CheckSubscriptionResult =
-        await MusicModule.checkSubscription();
+      const result: ISubscriptionResult = await MusicModule.checkSubscription();
 
       return result;
     } catch (error) {

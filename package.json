@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lomray-Software/react-native-apple-music.git"
+    "url": "https://github.com/Lomray-Software/react-native-apple-music.git"
   },
   "keywords": [
     "react-native"
@@ -30,26 +30,37 @@
     "react-native": "^0.73.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/runtime": "^7.23.6",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "@lomray/eslint-config": "^4.0.1",
-    "@lomray/prettier-config": "^2.0.1",
-    "@lomray/stylelint-config": "^2.0.1",
-    "@semantic-release/exec": "^6.0.3",
-    "@types/react": "^18.2.46",
-    "@typescript-eslint/eslint-plugin": "^6.17.0",
-    "@typescript-eslint/parser": "^6.17.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
+    "@lomray/eslint-config": "^3.0.0",
+    "@lomray/prettier-config": "^1.2.0",
+    "@react-native-community/netinfo": "^11.2.1",
+    "@react-native-google-signin/google-signin": "^11.0.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^18.2.45",
+    "@types/react-native": "^0.71.6",
+    "@zerollup/ts-transform-paths": "^1.7.18",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-prettier": "^5.1.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
-    "semantic-release": "^22.0.12",
-    "typescript": "^5.3.3"
+    "mobx": "^6.9.0",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-native": "0.71.7",
+    "rollup": "^4.9.1",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-folder-input": "^1.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-ts": "^3.4.5",
+    "semantic-release": "^21.1.2",
+    "typescript": "^4.7.4"
   }
 }
