@@ -1,0 +1,49 @@
+{
+  "name": "react-native-apple-music",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lomray-Software/react-native-apple-music.git"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "Lomray-Software",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
+  },
+  "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-native": "^0.73.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@lomray/eslint-config": "^4.0.1",
+    "@lomray/prettier-config": "^2.0.1",
+    "@lomray/stylelint-config": "^2.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "@types/react": "^18.2.46",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "semantic-release": "^22.0.12",
+    "typescript": "^5.3.3"
+  }
+}

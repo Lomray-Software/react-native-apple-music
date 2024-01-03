@@ -1,0 +1,29 @@
+name: Check PR
+
+on:
+  pull_request:
+    branches: [ prod ]
+
+jobs:
+  check:
+    name: Check PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          cache: 'npm'
+
+      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Check eslint
+        run: npm run lint:check
+
+      - name: Typescript check
+        run: npm run ts:check

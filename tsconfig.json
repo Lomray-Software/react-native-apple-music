@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "lib": [
+      "es6",
+      "es2015",
+      "es2017",
+      "es2019",
+      "dom",
+      "webworker"
+    ],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "declaration": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "strict": false,
+    "pretty": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "useDefineForClassFields": true,
+    "baseUrl": "./src",
+    "paths": {},
+    "jsx": "react-native"
+  },
+  "exclude": [
+    "node_modules",
+    "lib",
+    "scripts",
+    "commitlint.config.js",
+    "rollup.config.mjs"
+  ]
+}
