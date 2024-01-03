@@ -1,10 +1,31 @@
 {
   "name": "react-native-apple-music",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "version": "0.1.0",
+  "description": "MusicKit for RN",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
   "scripts": {
-    "test": "test",
     "build": "rollup -c",
     "release": "npm run build && cd lib && npm publish",
     "lint:check": "eslint --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
@@ -12,53 +33,138 @@
     "ts:check": "tsc --project ./tsconfig.json --skipLibCheck --noemit",
     "prepare": "husky install"
   },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Lomray-Software/react-native-apple-music.git"
+    "url": "git+https://github.com/trusasha/react-native-apple-music.git"
   },
-  "keywords": [
-    "react-native"
-  ],
-  "author": "Lomray-Software",
-  "license": "ISC",
+  "author": "Lomray Software <hts.sasha800i@gmail.com> (https://github.com/trusasha)",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
+    "url": "https://github.com/trusasha/react-native-apple-music/issues"
   },
-  "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-native": "0.71.7"
+  "homepage": "https://github.com/trusasha/react-native-apple-music#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/preset-react": "^7.23.3",
-    "@babel/runtime": "^7.23.6",
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/config-conventional": "^17.0.2",
     "@lomray/eslint-config": "^3.0.0",
     "@lomray/prettier-config": "^1.2.0",
-    "@react-native-community/netinfo": "^11.2.1",
-    "@react-native-google-signin/google-signin": "^11.0.0",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-json": "^6.1.0",
-    "@types/lodash": "^4.14.202",
-    "@types/react": "^18.2.45",
-    "@types/react-native": "^0.71.6",
-    "@zerollup/ts-transform-paths": "^1.7.18",
-    "eslint": "^8.49.0",
-    "eslint-config-prettier": "^8.10.0",
+    "@react-native/eslint-config": "^0.72.2",
+    "@types/jest": "^28.1.2",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "0.70.0",
+    "commitlint": "^17.0.2",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "mobx": "^6.9.0",
+    "jest": "^28.1.1",
+    "pod-install": "^0.1.0",
     "prettier": "^2.8.8",
+    "react": "18.2.0",
+    "react-native": "0.71.7",
     "rollup": "^4.9.1",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-folder-input": "^1.0.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-ts": "^3.4.5",
     "semantic-release": "^21.1.2",
-    "typescript": "^4.7.4"
+    "turbo": "^1.10.7",
+    "typescript": "^5.0.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.21"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@3.6.1",
+  "engines": {
+    "node": ">= 18.0.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
   }
 }
