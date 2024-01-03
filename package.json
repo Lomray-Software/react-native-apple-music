@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "rollup -c",
+    "release": "npm run build && cd lib && npm publish",
+    "lint:check": "eslint --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
+    "lint:format": "eslint --fix --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
+    "ts:check": "tsc --project ./tsconfig.json --skipLibCheck --noemit",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
