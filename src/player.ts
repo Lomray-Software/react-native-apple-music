@@ -1,4 +1,5 @@
 import type { EmitterSubscription } from 'react-native';
+// eslint-disable-next-line import/named
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import type PlaybackStatus from '../types/playback-status';
 import type Song from '../types/song';
@@ -16,6 +17,7 @@ interface IPlayerEvents {
   onCurrentSongChange: Song;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);
 
 // Initialize a structure to keep track of listeners
