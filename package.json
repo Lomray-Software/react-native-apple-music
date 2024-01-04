@@ -40,14 +40,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trusasha/react-native-apple-music.git"
+    "url": "git+https://github.com/Lomray-Software/react-native-apple-music.git"
   },
-  "author": "Lomray Software <hts.sasha800i@gmail.com> (https://github.com/trusasha)",
+  "author": "Lomray Software <mikhail.yarmaliuk@lomray.com> (https://github.com/Lomray-Software)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/trusasha/react-native-apple-music/issues"
+    "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
   },
-  "homepage": "https://github.com/trusasha/react-native-apple-music#readme",
+  "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
