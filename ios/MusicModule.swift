@@ -5,6 +5,7 @@ import StoreKit
 import MusicKit
 import Combine
 
+@available(iOS 15.0, *)
 @objc(MusicModule)
 class MusicModule: RCTEventEmitter {
 

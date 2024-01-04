@@ -1,8 +1,8 @@
 import type { EmitterSubscription } from 'react-native';
 // eslint-disable-next-line import/named
 import { NativeEventEmitter, NativeModules } from 'react-native';
-import type IPlaybackState from '../types/playback-state';
-import type ISong from '../types/song';
+import type { IPlaybackState } from '../types/playback-state';
+import type { ISong } from '../types/song';
 
 const { MusicModule } = NativeModules;
 

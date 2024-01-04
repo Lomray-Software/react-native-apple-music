@@ -7,6 +7,9 @@ npm-debug.log*
 .nyc_output
 coverage
 node_modules
+example/ios/Pods
+example/ios/Podfile.lock
+example/ios/.xcode.env.local
 build
 lib
 cache

@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 import type ICatalogSearchType from '../types/catalog-search-type';
-import type ISong from '../types/song';
+import type { ISong } from '../types/song';
 
 const { MusicModule } = NativeModules;
 
@@ -36,6 +36,8 @@ class MusicKit {
       throw new Error('Entities not found');
     } catch (error) {
       console.log('Error: ', error);
+
+      return [];
     }
   }
 }

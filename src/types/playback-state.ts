@@ -1,10 +1,8 @@
 import type PlaybackStatus from './playback-status';
-import type Song from './song';
+import type { ISong } from './song';
 
-interface IPlaybackState {
-  currentSong: Song;
+export interface IPlaybackState {
+  currentSong: ISong;
   playbackRate: number;
   playbackStatus: PlaybackStatus;
 }
-
-export default IPlaybackState;

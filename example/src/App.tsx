@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button, Image} from 'react-native';
 import {NativeModules} from 'react-native';
-import AppleMusic, {CatalogSearchType} from 'react-native-apple-music';
-import {useCurrentSong, useIsPlaying} from 'react-native-apple-music/hooks';
+import AppleMusic, {useIsPlaying, useCurrentSong} from 'react-native-apple-music';
+import ICatalogSearchType from '../../src/types/catalog-search-type';
 
 const {MusicModule} = NativeModules;
 
@@ -25,7 +25,7 @@ const App = props => {
   const onFetch = () => {
     AppleMusic.MusicKit.catalogSearch(
       'Taylor Swift',
-      [CatalogSearchType.SONGS],
+      [ICatalogSearchType.SONGS],
       {
         limit: 25,
         offset: 0,
