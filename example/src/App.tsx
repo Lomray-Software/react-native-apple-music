@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button, Image} from 'react-native';
 import {NativeModules} from 'react-native';
-import AppleMusic, {useIsPlaying, useCurrentSong} from 'react-native-apple-music';
-import ICatalogSearchType from '../../src/types/catalog-search-type';
+import {Auth, MusicKit, Player, useCurrentSong, useIsPlaying, CatalogSearchType} from '../../src/index';
 
 const {MusicModule} = NativeModules;
 
@@ -10,27 +9,22 @@ const App = props => {
   const isPlaying = useIsPlaying();
   const currentSong = useCurrentSong();
 
-  const onAuth = () => {
-    AppleMusic.Auth.authorize(status => {
+  const onAuth = () =>
+    Auth.authorize().then(status => {
       console.log('Authorization status:', status);
     });
-  };
 
   const onCheck = () => {
-    AppleMusic.Auth.checkSubscription().then(result => {
+    Auth.checkSubscription().then(result => {
       console.log('CHECK RESULT: ', result);
     });
   };
 
   const onFetch = () => {
-    AppleMusic.MusicKit.catalogSearch(
-      'Taylor Swift',
-      [ICatalogSearchType.SONGS],
-      {
-        limit: 25,
-        offset: 0,
-      },
-    )
+    MusicKit.catalogSearch('Taylor Swift', [CatalogSearchType.SONGS], {
+      limit: 25,
+      offset: 0,
+    })
       .then(results => {
         console.log('Search Results:', results);
       })
@@ -39,7 +33,7 @@ const App = props => {
       });
   };
 
-  const onSkip = () => AppleMusic.Player.skipToNextEntry();
+  const onSkip = () => Player.skipToNextEntry();
 
   return (
     <View style={styles.container}>

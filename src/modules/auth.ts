@@ -1,41 +1,38 @@
 import { NativeModules } from 'react-native';
+import type { AuthStatus } from '../types/auth-status';
+import type { ICheckSubscription } from '../types/check-subscription';
 
 const { MusicModule } = NativeModules;
-
-enum AuthStatus {
-  AUTHORIZED = 'authorized',
-  DENIED = 'denied',
-  NOT_DETERMINED = 'notDetermined',
-  RESTRICTED = 'restricted',
-  UNKNOWN = 'unknown',
-}
-
-interface ICheckSubscriptionResult {
-  canPlayCatalogContent: boolean;
-  hasCloudLibraryEnabled: boolean;
-}
 
 class Auth {
   /**
    * Requests authorization to access the user's Apple Music account.
-   * @param {function(AuthStatus):void} callback - The callback function to handle the authorization status.
+   * This function returns a promise that resolves to the authorization status.
+   * @returns {Promise<AuthStatus>} A promise that resolves to the authorization status of the user's Apple Music account.
    */
-  public static authorize(callback: (status: AuthStatus) => void) {
-    MusicModule.authorization(callback);
+  public static authorize(): Promise<AuthStatus> {
+    return new Promise((res, rej) => {
+      try {
+        MusicModule.authorization(res);
+      } catch (error) {
+        console.error('Apple Music Kit: ', error);
+
+        rej(error);
+      }
+    });
   }
 
   /**
    * Checks the user's subscription status for Apple Music.
-   * @returns {Promise<ICheckSubscriptionResult>} A promise that resolves to the subscription status.
+   * @returns {Promise<ICheckSubscription>} A promise that resolves to the subscription status.
    */
-  public static async checkSubscription(): Promise<ICheckSubscriptionResult> {
+  public static async checkSubscription(): Promise<ICheckSubscription> {
     try {
-      const result: ICheckSubscriptionResult =
-        await MusicModule.checkSubscription();
+      const result: ICheckSubscription = await MusicModule.checkSubscription();
 
       return result;
     } catch (error) {
-      console.log('Check subscription failed');
+      console.warn('Apple Music Kit: Check subscription failed.');
 
       return {
         canPlayCatalogContent: false,

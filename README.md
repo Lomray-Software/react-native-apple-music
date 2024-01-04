@@ -1,6 +1,6 @@
-# react-native-apple-music
+# Apple MusicKit for React Native
 
-MusicKit for RN
+A react native module for the Apple MusicKit ( [iOS](https://developer.apple.com/musickit/) )
 
 ## Installation
 

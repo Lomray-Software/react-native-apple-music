@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import AppleMusic from '..';
+import Player from '../modules/player';
+import type { IPlaybackState } from '../types/playback-state';
 
 /**
  * Custom React hook to track music playback status.
@@ -7,20 +8,18 @@ import AppleMusic from '..';
  * whether music is currently playing and provides a reactive `isPlaying` state.
  * @returns {boolean} The `isPlaying` state indicating whether music is currently playing.
  */
-const useIsPlaying = () => {
+const useIsPlaying = (): boolean => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    AppleMusic.Player.getCurrentState((state) =>
-      setIsPlaying(state?.playbackStatus === 'playing')
-    );
+    const updateIsPlaying = (state: IPlaybackState) =>
+      setIsPlaying(state?.playbackStatus === 'playing');
 
-    const playbackStateSubscription = AppleMusic.Player.addListener(
-      'onPlaybackStateChange',
-      (state) => setIsPlaying(state?.playbackStatus === 'playing')
-    );
+    Player.getCurrentState().then(updateIsPlaying).catch(console.error);
 
-    return () => playbackStateSubscription.remove();
+    Player.addListener('onPlaybackStateChange', updateIsPlaying);
+
+    return () => Player.removeListener('onPlaybackStateChange', updateIsPlaying);
   }, []);
 
   return isPlaying;

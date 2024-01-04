@@ -1,4 +1,4 @@
-import type PlaybackStatus from './playback-status';
+import type { PlaybackStatus } from './playback-status';
 import type { ISong } from './song';
 
 export interface IPlaybackState {

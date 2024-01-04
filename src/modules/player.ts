@@ -10,7 +10,6 @@ interface IPlayerEvents {
   onPlaybackStateChange: IPlaybackState;
   onCurrentSongChange: ISong;
 }
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);
 
@@ -24,37 +23,46 @@ class Player {
   /**
    * Skips to the next entry in the playback queue.
    */
-  public static skipToNextEntry() {
+  public static skipToNextEntry(): void {
     MusicModule.skipToNextEntry();
   }
 
   /**
    * Toggles the playback state between play and pause.
    */
-  public static togglePlayerState() {
+  public static togglePlayerState(): void {
     MusicModule.togglePlayerState();
   }
 
   /**
    * Starts playback of the current song.
    */
-  public static play() {
+  public static play(): void {
     MusicModule.play();
   }
 
   /**
    * Pauses playback of the current song.
    */
-  public static pause() {
+  public static pause(): void {
     MusicModule.pause();
   }
 
   /**
    * Retrieves the current playback state from the native music player.
-   * @param {function(IPlaybackState):void} callback - The callback function to handle the playback state.
+   * This function returns a promise that resolves to the current playback state.
+   * @returns {Promise<IPlaybackState>} A promise that resolves to the current playback state of the music player.
    */
-  public static getCurrentState(callback: (state: IPlaybackState) => void) {
-    MusicModule.getCurrentState(callback);
+  public static getCurrentState(): Promise<IPlaybackState> {
+    return new Promise((res, rej) => {
+      try {
+        MusicModule.getCurrentState(res);
+      } catch (error) {
+        console.error('Apple Music Kit: ', error);
+
+        rej(error);
+      }
+    });
   }
 
   /**
@@ -65,7 +73,7 @@ class Player {
    */
   public static addListener(
     eventType: keyof IPlayerEvents,
-    listener: (eventData: any) => void
+    listener: (eventData: any) => void,
   ): EmitterSubscription {
     const subscription = nativeEventEmitter.addListener(eventType, listener);
 
@@ -76,26 +84,19 @@ class Player {
 
   /**
    * Method to remove a specific event listener.
-   * @param subscription - The subscription returned from addListener to be removed.
+   * @param eventType - Type of the event the listener was added for.
+   * @param listener - The listener function to be removed.
    */
-  public static removeListener(subscription: EmitterSubscription) {
-    subscription.remove();
-    const eventType = subscription.eventType as keyof IPlayerEvents;
-
-    if (eventListeners[eventType]) {
-      eventListeners[eventType].delete(subscription);
-    }
-  }
-
-  /**
-   * Method to remove all listeners for a specific event type.
-   * @param eventType - Type of the event to remove listeners for.
-   */
-  public static removeAllListeners(eventType: keyof IPlayerEvents) {
-    eventListeners[eventType].forEach((subscription) => {
-      subscription.remove();
+  public static removeListener(
+    eventType: keyof IPlayerEvents,
+    listener: (eventData: any) => void,
+  ): void {
+    eventListeners[eventType].forEach((subscription: EmitterSubscription) => {
+      if ((subscription as any).listener === listener) {
+        subscription.remove();
+        eventListeners[eventType].delete(subscription);
+      }
     });
-    eventListeners[eventType].clear();
   }
 }
 

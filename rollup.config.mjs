@@ -48,8 +48,7 @@ export default {
     json(),
     copy({
       targets: [
-        { src: 'typings/**/*', dest: 'lib/typings' },
-        { src: 'src/scripts/**/*', dest: 'lib/scripts' },
+        { src: 'ios/**/*', dest: 'lib/ios' },
         { src: 'package.json', dest: 'lib' },
         { src: 'README.md', dest: 'lib' },
       ]

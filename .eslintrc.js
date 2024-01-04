@@ -31,6 +31,7 @@ module.exports = {
     'unicorn/import-index': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'no-await-in-loop': 'off',
+    'import/prefer-default-export': 'off',
     'prettier/prettier': [
       'error',
       {

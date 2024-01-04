@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-import type ICatalogSearchType from '../types/catalog-search-type';
+import type { CatalogSearchType } from '../types/catalog-search-type';
 import type { ISong } from '../types/song';
 
 const { MusicModule } = NativeModules;
@@ -19,23 +19,23 @@ class MusicKit {
    */
   public static async catalogSearch(
     search: string,
-    types: ICatalogSearchType[],
-    options?: IEndlessListOptions
-  ) {
+    types: CatalogSearchType[],
+    options?: IEndlessListOptions,
+  ): Promise<ISong[]> {
     try {
       const response: { results: ISong[] } = await MusicModule.catalogSearch(
         search,
         types,
-        options
+        options,
       );
 
       if (response.results) {
         return response.results;
       }
 
-      throw new Error('Entities not found');
+      throw new Error('Apple Music Kit: Entities not found.');
     } catch (error) {
-      console.log('Error: ', error);
+      console.error('Apple Music Kit: ', error);
 
       return [];
     }

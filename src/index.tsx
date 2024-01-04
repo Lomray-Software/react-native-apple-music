@@ -1,16 +1,19 @@
 export type { IPlaybackState } from './types/playback-state';
 
-export type { ISong } from './types/song';
+export * from './types/song';
 
-export type { default as PlaybackStatus } from './types/playback-status';
+export * from './types/playback-status';
 
-export { default as CatalogSearchType } from './types/catalog-search-type';
+export * from './types/catalog-search-type';
 
-import { useCurrentSong, useIsPlaying } from './hooks';
+export * from './types/auth-status';
+
+export * from './types/check-subscription';
+
+import useCurrentSong from './hooks/use-current-song';
+import useIsPlaying from './hooks/use-is-playing';
 import Auth from './modules/auth';
 import MusicKit from './modules/music-kit';
 import Player from './modules/player';
 
-export { useCurrentSong, useIsPlaying };
-
-export default { Auth, Player, MusicKit };
+export { useCurrentSong, useIsPlaying, Auth, Player, MusicKit };

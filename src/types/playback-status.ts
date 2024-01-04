@@ -1,4 +1,4 @@
-enum PlaybackStatus {
+export enum PlaybackStatus {
   PLAYING = 'playing',
   PAUSED = 'paused',
   STOPPED = 'stopped',
@@ -6,5 +6,3 @@ enum PlaybackStatus {
   SEEKING_FORWARD = 'seekingForward',
   SEEKING_BACKWARD = 'seekingBackward',
 }
-
-export default PlaybackStatus;

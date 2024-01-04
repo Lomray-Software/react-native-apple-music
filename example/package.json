@@ -1,6 +1,6 @@
 {
   "name": "react-native-apple-music-example",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,9 +10,9 @@
     "build:ios": "cd ios && xcodebuild -workspace AppleMusicExample.xcworkspace -scheme AppleMusicExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
   },
   "dependencies": {
+    "@lomray/react-native-apple-music": "file:../",
     "react": "18.2.0",
-    "react-native": "0.73.1",
-    "react-native-apple-music": "file:../"
+    "react-native": "0.73.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

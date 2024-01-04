@@ -1,6 +1,4 @@
-enum ICatalogSearchType {
+export enum CatalogSearchType {
   SONGS = 'songs',
   ALBUMS = 'albums',
 }
-
-export default ICatalogSearchType;

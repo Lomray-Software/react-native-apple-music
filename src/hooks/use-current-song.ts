@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { IPlaybackState } from '..';
-import AppleMusic from '..';
+import Player from '../modules/player';
+import type { IPlaybackState } from '../types/playback-state';
 import type { ISong } from '../types/song';
 
 /**
@@ -9,20 +9,17 @@ import type { ISong } from '../types/song';
  *
  * @returns {Song | null} The `currentSong` state indicating the current song details or null if no song is playing.
  */
-const useCurrentSong = () => {
+const useCurrentSong = (): ISong | null => {
   const [currentSong, setCurrentSong] = useState<ISong | null>(null);
 
   useEffect(() => {
-    AppleMusic.Player.getCurrentState((currentState) =>
-      setCurrentSong(currentState?.currentSong)
-    );
+    const updateCurrentSong = (state: IPlaybackState) => setCurrentSong(state?.currentSong);
 
-    const playbackStateSubscription = AppleMusic.Player.addListener(
-      'onCurrentSongChange',
-      (state: IPlaybackState) => setCurrentSong(state?.currentSong)
-    );
+    Player.getCurrentState().then(updateCurrentSong).catch(console.error);
 
-    return () => playbackStateSubscription.remove();
+    Player.addListener('onCurrentSongChange', updateCurrentSong);
+
+    return () => Player.removeListener('onCurrentSongChange', updateCurrentSong);
   }, []);
 
   return currentSong;
