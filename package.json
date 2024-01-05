@@ -2,8 +2,10 @@
   "name": "@lomray/react-native-apple-music",
   "version": "1.0.0",
   "description": "Apple MusicKit for React-Native",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index",
+  "module": "lib/index",
+  "types": "lib/index.d.ts",
+  "source": "lib/index",
   "keywords": [
     "js",
     "react-native",
@@ -15,7 +17,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "source": "src/index",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lomray-Software/react-native-apple-music.git"
