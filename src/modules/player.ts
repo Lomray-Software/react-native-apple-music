@@ -52,7 +52,7 @@ class Player {
       try {
         MusicModule.getCurrentState(res);
       } catch (error) {
-        console.error('Apple Music Kit: ', error);
+        console.error('Apple Music Kit: getCurrentState failed.', error);
 
         rej(error);
       }

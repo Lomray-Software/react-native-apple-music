@@ -1,11 +1,3 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-} from 'react-native';
 import {
   Auth,
   MusicKit,
@@ -14,10 +6,12 @@ import {
   useIsPlaying,
   CatalogSearchType,
 } from '@lomray/react-native-apple-music';
+import React from 'react';
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
 
 const App = () => {
-  const isPlaying = useIsPlaying();
-  const currentSong = useCurrentSong();
+  const { isPlaying } = useIsPlaying();
+  const { song } = useCurrentSong();
 
   const onAuth = () => {
     Auth.authorize()
@@ -31,7 +25,7 @@ const App = () => {
       .catch(console.error);
   };
 
-  const onToggle = () => Player.togglePlayerState();
+  const onToggle = () => void Player.togglePlayerState();
 
   const onFetch = () => {
     MusicKit.catalogSearch('Taylor Swift', [CatalogSearchType.SONGS], {
@@ -46,7 +40,7 @@ const App = () => {
       });
   };
 
-  const onSkip = () => Player.skipToNextEntry();
+  const onSkip = () => void Player.skipToNextEntry();
 
   return (
     <View style={styles.container}>
@@ -60,14 +54,12 @@ const App = () => {
       </View>
       <View style={styles.musicContainer}>
         <View style={[styles.indicator, { backgroundColor: isPlaying ? 'green' : 'red' }]} />
-        {currentSong && (
+        {song && (
           <>
-            {currentSong.artworkUrl && (
-              <Image style={styles.image} source={{ uri: currentSong.artworkUrl }} />
-            )}
+            {song.artworkUrl && <Image style={styles.image} source={{ uri: song.artworkUrl }} />}
             <View style={styles.content}>
-              <Text>{currentSong.title}</Text>
-              <Text style={styles.artist}>{currentSong.artistName}</Text>
+              <Text>{song.title}</Text>
+              <Text style={styles.artist}>{song.artistName}</Text>
             </View>
           </>
         )}

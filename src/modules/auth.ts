@@ -15,7 +15,7 @@ class Auth {
       try {
         MusicModule.authorization(res);
       } catch (error) {
-        console.error('Apple Music Kit: ', error);
+        console.error('Apple Music Kit: Authorize failed.', error);
 
         rej(error);
       }
@@ -32,7 +32,7 @@ class Auth {
 
       return result;
     } catch (error) {
-      console.warn('Apple Music Kit: Check subscription failed.');
+      console.warn('Apple Music Kit: Check subscription failed.', error);
 
       return {
         canPlayCatalogContent: false,

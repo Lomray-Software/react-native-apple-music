@@ -22,23 +22,13 @@ class MusicKit {
     types: CatalogSearchType[],
     options?: IEndlessListOptions,
   ): Promise<ISong[]> {
-    try {
-      const response: { results: ISong[] } = await MusicModule.catalogSearch(
-        search,
-        types,
-        options,
-      );
+    const response: { results: ISong[] } = await MusicModule.catalogSearch(search, types, options);
 
-      if (response.results) {
-        return response.results;
-      }
-
-      throw new Error('Apple Music Kit: Entities not found.');
-    } catch (error) {
-      console.error('Apple Music Kit: ', error);
-
-      return [];
+    if (response.results) {
+      return response.results;
     }
+
+    return [];
   }
 }
 
