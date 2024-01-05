@@ -160,9 +160,9 @@ function MusicPlayerComponent() {
   const isPlaying = useIsPlaying();
 
   return (
-    <div>
+    <View>
       {isPlaying ? 'Playing' : 'Paused'} - {currentSong?.title || 'No song playing'}
-    </div>
+    </View>
   );
 }
 ```
