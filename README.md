@@ -120,6 +120,19 @@ const playbackListener = Player.addListener('onPlaybackStateChange', state => {
 playbackListener.remove();
 ```
 
+### Managing Event Listeners
+To maintain optimal performance and prevent memory leaks, it's important to manage your event listeners effectively. Here's how you can add and remove listeners using the `Player` class.
+```javascript
+const playbackListener = Player.addListener('onPlaybackStateChange', state => {
+  console.log('New Playback State:', state);
+});
+```
+```javascript
+// This will remove all listeners for 'onPlaybackStateChange' event
+Player.removeAllListeners('onPlaybackStateChange');
+```
+
+
 ### Searching the Catalog
 Search the Apple Music catalog:
 
@@ -156,7 +169,7 @@ function MusicPlayerComponent() {
 
 ## Bugs and feature requests
 
-Bug or a feature request, [please open a new issue](https://github.com/Lomray-Software/vite-ssr-boost/issues/new).
+Bug or a feature request, [please open a new issue](https://github.com/Lomray-Software/react-native-apple-music/issues/new).
 
 ## License
 Made with 💚
