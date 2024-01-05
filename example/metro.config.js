@@ -1,10 +1,6 @@
 const path = require('path');
-const escape = require('escape-string-regexp');
-const blacklist = require('metro-config/src/defaults/exclusionList');
 const pak = require('../package.json');
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-
-const root = path.resolve(__dirname, '..');
 
 const modules = Object.keys({
   ...pak.peerDependencies,
@@ -23,9 +19,6 @@ const {
  */
 const config = {
   resolver: {
-    blacklistRE: blacklist(
-      modules.map((m) => new RegExp(`^${escape(path.join(root, 'node_modules', m))}\\/.*$`)),
-    ),
     assetExts: assetExts.filter((ext) => ext !== 'svg'),
     sourceExts: [...sourceExts, 'svg'],
     extraNodeModules: modules.reduce((acc, name) => {
