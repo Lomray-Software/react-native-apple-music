@@ -17,9 +17,9 @@ const useCurrentSong = (): ISong | null => {
 
     Player.getCurrentState().then(updateCurrentSong).catch(console.error);
 
-    Player.addListener('onCurrentSongChange', updateCurrentSong);
+    const listener = Player.addListener('onCurrentSongChange', updateCurrentSong);
 
-    return () => Player.removeListener('onCurrentSongChange', updateCurrentSong);
+    return () => listener.remove();
   }, []);
 
   return currentSong;

@@ -1,34 +1,47 @@
 import React from 'react';
-import {View, Text, StyleSheet, Button, Image} from 'react-native';
-import {NativeModules} from 'react-native';
-import {Auth, MusicKit, Player, useCurrentSong, useIsPlaying, CatalogSearchType} from '../../src/index';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Image,
+} from 'react-native';
+import {
+  Auth,
+  MusicKit,
+  Player,
+  useCurrentSong,
+  useIsPlaying,
+  CatalogSearchType,
+} from '@lomray/react-native-apple-music';
 
-const {MusicModule} = NativeModules;
-
-const App = props => {
+const App = () => {
   const isPlaying = useIsPlaying();
   const currentSong = useCurrentSong();
 
-  const onAuth = () =>
-    Auth.authorize().then(status => {
-      console.log('Authorization status:', status);
-    });
+  const onAuth = () => {
+    Auth.authorize()
+      .then((status) => console.log('Authorize:', status))
+      .catch(console.error);
+  };
 
   const onCheck = () => {
-    Auth.checkSubscription().then(result => {
-      console.log('CHECK RESULT: ', result);
-    });
+    Auth.checkSubscription()
+      .then((result) => console.log('CheckSubscription: ', result))
+      .catch(console.error);
   };
+
+  const onToggle = () => Player.togglePlayerState();
 
   const onFetch = () => {
     MusicKit.catalogSearch('Taylor Swift', [CatalogSearchType.SONGS], {
       limit: 25,
       offset: 0,
     })
-      .then(results => {
+      .then((results) => {
         console.log('Search Results:', results);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Failed to perform catalog search:', error);
       });
   };
@@ -41,33 +54,20 @@ const App = props => {
       <Button title="Authorize" onPress={onAuth} />
       <Button title="Check Status" onPress={onCheck} />
       <Button title="Fetch" onPress={onFetch} />
-      <View style={{marginTop: 16}}>
-        <Button
-          title={isPlaying ? 'Pause' : 'Play'}
-          onPress={() => MusicModule.togglePlayerState()}
-        />
+      <View style={styles.mt16}>
+        <Button title={isPlaying ? 'Pause' : 'Play'} onPress={onToggle} />
         <Button title="Next" onPress={onSkip} />
       </View>
       <View style={styles.musicContainer}>
-        <View
-          style={[
-            styles.indicator,
-            {backgroundColor: isPlaying ? 'green' : 'red'},
-          ]}
-        />
+        <View style={[styles.indicator, { backgroundColor: isPlaying ? 'green' : 'red' }]} />
         {currentSong && (
           <>
             {currentSong.artworkUrl && (
-              <>
-                <Image
-                  style={styles.image}
-                  source={{uri: currentSong.artworkUrl}}
-                />
-              </>
+              <Image style={styles.image} source={{ uri: currentSong.artworkUrl }} />
             )}
-            <View style={{maxWidth: '80%'}}>
+            <View style={styles.content}>
               <Text>{currentSong.title}</Text>
-              <Text style={{fontWeight: '700'}}>{currentSong.artistName}</Text>
+              <Text style={styles.artist}>{currentSong.artistName}</Text>
             </View>
           </>
         )}
@@ -75,6 +75,7 @@ const App = props => {
     </View>
   );
 };
+
 export default App;
 
 const styles = StyleSheet.create({
@@ -83,6 +84,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
+  },
+  mt16: {
+    marginTop: 16,
   },
   indicator: {
     width: 10,
@@ -99,5 +103,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 4,
     marginRight: 12,
+  },
+  content: {
+    maxWidth: '80%',
+  },
+  artist: {
+    fontWeight: '700',
   },
 });

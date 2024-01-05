@@ -17,9 +17,9 @@ const useIsPlaying = (): boolean => {
 
     Player.getCurrentState().then(updateIsPlaying).catch(console.error);
 
-    Player.addListener('onPlaybackStateChange', updateIsPlaying);
+    const listener = Player.addListener('onPlaybackStateChange', updateIsPlaying);
 
-    return () => Player.removeListener('onPlaybackStateChange', updateIsPlaying);
+    return () => listener.remove();
   }, []);
 
   return isPlaying;

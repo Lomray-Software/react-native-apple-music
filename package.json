@@ -20,6 +20,12 @@
     "type": "git",
     "url": "git+https://github.com/Lomray-Software/react-native-apple-music.git"
   },
+  "bugs": {
+    "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
+  },
+  "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
+  "author": "Lomray Software",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "rollup -c",
     "release": "npm run build && cd lib && npm publish",
@@ -27,12 +33,6 @@
     "lint:format": "eslint --fix --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
     "ts:check": "tsc --project ./tsconfig.json --skipLibCheck --noemit",
     "prepare": "husky install"
-  },
-  "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
-  "author": "Lomray Software",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",
@@ -81,11 +81,6 @@
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   }
 }

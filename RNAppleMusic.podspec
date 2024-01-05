@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "15.0" }
-  s.source       = { :git => "https://github.com/Lomray-Software/react-native-apple-music.git", :tag => "#{s.version}" }
+  s.source       = { :git => package['repository']['url'], :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
