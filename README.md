@@ -49,7 +49,110 @@ npx pod-install
 As of React Native `> 0.61`, auto linking should work for iOS. There shouldn't be any modifications necessary and it _Should_ work out of the box.
 
 ## Usage
+The `@lomray/react-native-apple-music` package provides a set of tools to interact with Apple MusicKit in your React Native application. Here's how to get started:
+### Importing the Module
+First, import the necessary modules from the package:
+```javascript
+import {
+  Auth,
+  Player,
+  MusicKit,
+  useCurrentSong,
+  useIsPlaying,
+} from '@lomray/react-native-apple-music';
+```
 
+### Authentication
+Before accessing Apple Music data, you need to authenticate the user and obtain permissions:
+
+```javascript
+async function authenticate() {
+  try {
+    const authStatus = await Auth.authorize();
+    console.log('Authorization Status:', authStatus);
+  } catch (error) {
+    console.error('Authorization failed:', error);
+  }
+}
+```
+
+### Checking Subscription
+Check if the user has an active Apple Music subscription:
+
+```javascript
+async function checkSubscription() {
+  const subscriptionStatus = await Auth.checkSubscription();
+  console.log('Subscription Status:', subscriptionStatus);
+}
+```
+
+### Playing Music
+Control playback using the Player module:
+
+```javascript
+// Play music
+Player.play();
+
+// Pause music
+Player.pause();
+
+// Toggle between play and pause
+Player.togglePlayerState();
+
+// Skip to the next song
+Player.skipToNextEntry();
+```
+
+### Retrieving Playback State
+Get the current playback state and listen for changes:
+
+```javascript
+Player.getCurrentState().then(state => {
+  console.log('Current Playback State:', state);
+});
+
+// Listen for playback state changes
+const playbackListener = Player.addListener('onPlaybackStateChange', state => {
+  console.log('New Playback State:', state);
+});
+
+// Don't forget to remove the listener when it's no longer needed
+playbackListener.remove();
+```
+
+### Searching the Catalog
+Search the Apple Music catalog:
+
+```javascript
+async function searchCatalog(query) {
+  try {
+    const types = ['songs', 'albums']; // Define the types of items you're searching for
+    const results = await MusicKit.catalogSearch(query, types);
+    console.log('Search Results:', results);
+  } catch (error) {
+    console.error('Search failed:', error);
+  }
+}
+```
+
+### Using Hooks
+The package provides hooks for reactive states in your components:
+
+```javascript
+import React from 'react';
+import { useCurrentSong, useIsPlaying } from '@lomray/react-native-apple-music';
+
+function MusicPlayerComponent() {
+  const currentSong = useCurrentSong();
+  const isPlaying = useIsPlaying();
+
+  return (
+    <div>
+      {isPlaying ? 'Playing' : 'Paused'} - {currentSong?.title || 'No song playing'}
+    </div>
+  );
+}
+```
 
 ## Bugs and feature requests
 
