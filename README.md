@@ -153,6 +153,7 @@ The package provides hooks for reactive states in your components:
 
 ```javascript
 import React from 'react';
+import { View } from 'react-native';
 import { useCurrentSong, useIsPlaying } from '@lomray/react-native-apple-music';
 
 function MusicPlayerComponent() {
@@ -160,9 +161,9 @@ function MusicPlayerComponent() {
   const isPlaying = useIsPlaying();
 
   return (
-    <div>
+    <View>
       {isPlaying ? 'Playing' : 'Paused'} - {currentSong?.title || 'No song playing'}
-    </div>
+    </View>
   );
 }
 ```
