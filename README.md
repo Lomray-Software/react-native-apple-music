@@ -157,8 +157,8 @@ import { View } from 'react-native';
 import { useCurrentSong, useIsPlaying } from '@lomray/react-native-apple-music';
 
 function MusicPlayerComponent() {
-  const currentSong = useCurrentSong();
-  const isPlaying = useIsPlaying();
+  const { song } = useCurrentSong();
+  const { isPlaying } = useIsPlaying();
 
   return (
     <View>
