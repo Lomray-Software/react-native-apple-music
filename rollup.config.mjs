@@ -51,6 +51,7 @@ export default {
         { src: 'ios/**/*', dest: 'lib/ios' },
         { src: 'package.json', dest: 'lib' },
         { src: 'README.md', dest: 'lib' },
+        { src: 'RNAppleMusic.podspec', dest: 'lib/ios'},
       ]
     })
   ],

@@ -2,10 +2,10 @@
   "name": "@lomray/react-native-apple-music",
   "version": "1.0.0",
   "description": "Apple MusicKit for React-Native",
-  "main": "lib/index",
-  "module": "lib/index",
-  "types": "lib/index.d.ts",
-  "source": "lib/index",
+  "main": "index",
+  "module": "index",
+  "types": "index.d.ts",
+  "source": "index",
   "keywords": [
     "js",
     "react-native",
@@ -81,7 +81,7 @@
     "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
+      "<rootDir>/"
     ]
   }
 }
