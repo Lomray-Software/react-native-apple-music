@@ -10,11 +10,10 @@ export default {
     'src/**/*.ts*',
   ],
   output: {
-    dir: 'lib',
+    dir: 'lib/src',
     format: 'es',
     sourcemap: true,
     preserveModules: true,
-    preserveModulesRoot: 'src',
     exports: 'auto',
   },
   external: [
