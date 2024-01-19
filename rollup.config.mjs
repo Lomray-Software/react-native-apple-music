@@ -14,6 +14,7 @@ export default {
     format: 'es',
     sourcemap: true,
     preserveModules: true,
+    preserveModulesRoot: 'src',
     exports: 'auto',
   },
   external: [
