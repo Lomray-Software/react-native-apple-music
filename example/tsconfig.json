@@ -66,12 +66,7 @@
     "baseUrl": "./",
     "rootDirs": [
       "./src"
-    ],
-    "paths": {
-      "@lomray/react-native-apple-music": [
-        "../src/index"
-      ]
-    }
+    ]
   },
   "include": ["src", "__tests__", "__mocks__", "__helpers__", "*.js", ".*.js", "scripts/**/*"],
   "exclude": ["node_modules"]

@@ -1,8 +1,6 @@
 import typescript from 'rollup-plugin-ts';
 import json from '@rollup/plugin-json';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { folderInput } from 'rollup-plugin-folder-input';
-import babel from '@rollup/plugin-babel';
 import copy from 'rollup-plugin-copy';
 
 export default {
@@ -10,7 +8,7 @@ export default {
     'src/**/*.ts*',
   ],
   output: {
-    dir: 'lib/src',
+    dir: 'lib',
     format: 'es',
     sourcemap: true,
     preserveModules: true,
@@ -36,22 +34,13 @@ export default {
         ]
       }),
     }),
-    babel({
-      exclude: 'node_modules/**',
-      include: ['src/**/*'],
-      babelHelpers: 'bundled',
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    }),
-    peerDepsExternal({
-      includeDependencies: true,
-    }),
     json(),
     copy({
       targets: [
         { src: 'ios/**/*', dest: 'lib/ios' },
         { src: 'package.json', dest: 'lib' },
         { src: 'README.md', dest: 'lib' },
-        { src: 'RNAppleMusic.podspec', dest: 'lib/ios'},
+        { src: 'RNAppleMusic.podspec', dest: 'lib'},
       ]
     })
   ],

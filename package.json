@@ -2,10 +2,8 @@
   "name": "@lomray/react-native-apple-music",
   "version": "1.0.0",
   "description": "Apple MusicKit for React-Native",
-  "main": "src/index",
-  "module": "src/index",
-  "types": "src/index.d.ts",
-  "source": "src/index",
+  "main": "index.js",
+  "type": "module",
   "keywords": [
     "js",
     "react-native",
