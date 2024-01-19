@@ -4,7 +4,7 @@
   "description": "Apple MusicKit for React-Native",
   "main": "src/index",
   "module": "src/index",
-  "types": "src/index",
+  "types": "src/index.d.ts",
   "source": "src/index",
   "keywords": [
     "js",
