@@ -2,10 +2,8 @@
   "name": "@lomray/react-native-apple-music",
   "version": "1.0.0",
   "description": "Apple MusicKit for React-Native",
-  "main": "lib/index",
-  "module": "lib/index",
-  "types": "lib/index.d.ts",
-  "source": "lib/index",
+  "main": "index.js",
+  "type": "module",
   "keywords": [
     "js",
     "react-native",
@@ -43,7 +41,6 @@
     "@lomray/eslint-config": "^3.0.0",
     "@lomray/prettier-config": "^1.2.0",
     "@react-native/eslint-config": "^0.72.2",
-    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-json": "^6.1.0",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
@@ -62,7 +59,6 @@
     "rollup": "^4.9.1",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-folder-input": "^1.0.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-ts": "^3.4.5",
     "semantic-release": "^21.1.2",
     "typescript": "^5.0.2"
