@@ -50,6 +50,7 @@ class MusicModule: RCTEventEmitter {
 
   private func sendPlaybackStateUpdate() {
       let state = SystemMusicPlayer.shared.state
+      let playbackInterval = SystemMusicPlayer.shared.playbackTime
       let playbackStatusDescription = describePlaybackStatus(state.playbackStatus)
       let playbackRate = state.playbackRate
 
@@ -57,7 +58,8 @@ class MusicModule: RCTEventEmitter {
           self.getCurrentSongInfo { songInfo in
               var playbackInfo: [String: Any] = [
                   "playbackRate": playbackRate,
-                  "playbackStatus": playbackStatusDescription
+                  "playbackStatus": playbackStatusDescription,
+                  "playbackTime": playbackInterval
               ]
 
               if let songInfo = songInfo {
@@ -102,6 +104,7 @@ class MusicModule: RCTEventEmitter {
       case .song(let song):
           print("Current song: \(song.title) - \(song.artistName)")
           print("Current song ID: \(String(describing: song.id))")
+          print("Current song duration: \(song.duration ?? 0)")
 
           Task {
               let songID = song.id
@@ -270,7 +273,8 @@ class MusicModule: RCTEventEmitter {
           "id": String(describing: song.id),
           "title": song.title,
           "artistName": song.artistName,
-          "artworkUrl": artworkUrlString
+          "artworkUrl": artworkUrlString,
+          "duration": String(song.duration ?? 0)
       ]
   }
 

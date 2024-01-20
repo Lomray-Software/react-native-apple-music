@@ -5,4 +5,5 @@ export interface IPlaybackState {
   currentSong: ISong;
   playbackRate: number;
   playbackStatus: PlaybackStatus;
+  playbackTime: number;
 }
