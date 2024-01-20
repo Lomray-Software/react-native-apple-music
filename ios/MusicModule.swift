@@ -50,7 +50,7 @@ class MusicModule: RCTEventEmitter {
 
   private func sendPlaybackStateUpdate() {
       let state = SystemMusicPlayer.shared.state
-      let playbackInterval = SystemMusicPlayer.shared.playbackTime
+      let playbackTime = SystemMusicPlayer.shared.playbackTime
       let playbackStatusDescription = describePlaybackStatus(state.playbackStatus)
       let playbackRate = state.playbackRate
 
@@ -59,7 +59,7 @@ class MusicModule: RCTEventEmitter {
               var playbackInfo: [String: Any] = [
                   "playbackRate": playbackRate,
                   "playbackStatus": playbackStatusDescription,
-                  "playbackTime": playbackInterval
+                  "playbackTime": playbackTime
               ]
 
               if let songInfo = songInfo {
@@ -76,13 +76,15 @@ class MusicModule: RCTEventEmitter {
   @objc(getCurrentState:)
   func getCurrentState(_ callback: @escaping RCTResponseSenderBlock) {
       let state = SystemMusicPlayer.shared.state
+      let playbackTime = SystemMusicPlayer.shared.playbackTime
       let playbackStatusDescription = describePlaybackStatus(state.playbackStatus)
       let playbackRate = state.playbackRate
 
       self.getCurrentSongInfo { songInfo in
           var currentState: [String: Any] = [
               "playbackRate": playbackRate,
-              "playbackStatus": playbackStatusDescription
+              "playbackStatus": playbackStatusDescription,
+              "playbackTime": playbackTime
           ]
 
           if let songInfo = songInfo {
@@ -102,10 +104,6 @@ class MusicModule: RCTEventEmitter {
 
       switch currentEntry.item {
       case .song(let song):
-          print("Current song: \(song.title) - \(song.artistName)")
-          print("Current song ID: \(String(describing: song.id))")
-          print("Current song duration: \(song.duration ?? 0)")
-
           Task {
               let songID = song.id
               let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: songID)
