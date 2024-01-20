@@ -3,4 +3,5 @@ export interface ISong {
   title: string;
   artworkUrl: string;
   id: string;
+  duration: number;
 }
