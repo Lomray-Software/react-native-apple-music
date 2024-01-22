@@ -32,11 +32,12 @@ class Auth {
 
       return result;
     } catch (error) {
-      console.warn('Apple Music Kit: Check subscription failed.', error);
+      console.error('Apple Music Kit: Check subscription failed.', error);
 
       return {
         canPlayCatalogContent: false,
         hasCloudLibraryEnabled: false,
+        isMusicCatalogSubscriptionEligible: false,
       };
     }
   }

@@ -10,6 +10,10 @@ export * from './types/auth-status';
 
 export * from './types/check-subscription';
 
+export * from './types/music-item';
+
+export * from './types/tracks-from-library';
+
 import useCurrentSong from './hooks/use-current-song';
 import useIsPlaying from './hooks/use-is-playing';
 import Auth from './modules/auth';
