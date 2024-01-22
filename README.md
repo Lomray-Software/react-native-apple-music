@@ -10,26 +10,32 @@ An [Example](./example) project was developed to exercise and test all functiona
 
 The following table shows the platform support for various Apple Music functionality within this library.
 
-| Feature                      | iOS |
-| :--------------------------- | :-: |
-| **Auth**           |
-| `authorize`                  | ✅  |
-| `checkSubscription`          | ✅  |
-| **Player**                   |
-| `play`                       | ✅  |
-| `pause`                      | ✅  |
-| `togglePlayerState`          | ✅  |
-| `skipToNextEntry`            | ✅  |
-| `getCurrentState`            | ✅  |
-| `addListener`                | ✅  |
-| `removeListener`             | ✅  |
-| **MusicKit**                 |
-| `catalogSearch`              | ✅  |
+| Feature                | iOS |
+|:-----------------------| :-: |
+| **Auth**               |
+| `authorize`            | ✅  |
+| `checkSubscription`    | ✅  |
+| **Player**             |
+| `play`                 | ✅  |
+| `pause`                | ✅  |
+| `togglePlayerState`    | ✅  |
+| `skipToNextEntry`      | ✅  |
+| `getCurrentState`      | ✅  |
+| `addListener`          | ✅  |
+| `removeListener`       | ✅  |
+| **MusicKit**           |
+| `catalogSearch`        | ✅  |
+| `getTracksFromLibrary` | ✅  |
+| `setPlaybackQueue`     | ✅  |
 
 ## Installation
 
 ```sh
 npm install @lomray/react-native-apple-music
+```
+- In your Podfile, set minimum IOS target for Pod installation:
+```sh
+platform :ios, 15.0
 ```
 ```sh
 npx pod-install
@@ -43,6 +49,7 @@ npx pod-install
 <string>Allow to continue</string>
 ```
 - Ensure that your Apple Developer account has the MusicKit entitlement enabled and the appropriate MusicKit capabilities are set in your app's bundle identifier.
+- It's highly recommended to set a minimum deployment target of your application to 16.0 and above, because MusicKit requires it to perform a catalog search and some convertation methods.
 
 ## Linking
 
@@ -139,11 +146,42 @@ Search the Apple Music catalog:
 ```javascript
 async function searchCatalog(query) {
   try {
-    const types = ['songs', 'albums']; // Define the types of items you're searching for
+    const types = ['songs', 'albums']; // Define the types of items you're searching for. The result will contain items among songs/albums
     const results = await MusicKit.catalogSearch(query, types);
     console.log('Search Results:', results);
   } catch (error) {
     console.error('Search failed:', error);
+  }
+}
+```
+
+
+### Getting user's recently played songs or albums
+Get a list of recently played items:
+
+```javascript
+async function getTracksFromLibrary() {
+  try {
+    const results = await MusicKit.getTracksFromLibrary();
+    
+    console.log('User`s library Results:', results);
+  } catch (error) {
+    console.error('Getting user tracks failed:', error);
+  }
+}
+```
+
+
+
+### Set a playback Queue
+Load a system Player with Song, Album, Playlist or Station, using their ID:
+
+```javascript
+async function setPlaybackQueue() {
+  try {
+    await MusicKit.setPlaybackQueue("123456", "album");
+  } catch (error) {
+    console.error('Setting playback queue:', error);
   }
 }
 ```
