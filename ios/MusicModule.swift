@@ -102,6 +102,7 @@ class MusicModule: RCTEventEmitter {
           return
       }
 
+
       switch currentEntry.item {
       case .song(let song):
           Task {
@@ -335,23 +336,28 @@ class MusicModule: RCTEventEmitter {
 
     @available(iOS 16.0, *)
     func convertMusicItemsToDictionary(_ track: RecentlyPlayedMusicItem) -> [String: Any] {
-        var resultCollection: [String: Any] = [
-            "id": String(describing: track.id),
-            "title": track.title,
-            "subtitle": String(describing: track.subtitle ?? "")
-        ]
-        
-        switch track {
-        case .album:
-            return resultCollection["type"] = "album"
-        case .playlist:
-            return resultCollection["type"] = "playlist"
-        case .station:
-            return resultCollection["type"] = "station"
-        default:
-            return resultCollection["type"] = "unknown"
+            var resultCollection: [String: Any] = [
+                "id": String(describing: track.id),
+                "title": track.title,
+                "subtitle": String(describing: track.subtitle ?? "")
+            ]
+
+            switch track {
+            case .album:
+                resultCollection["type"] = "album"
+                break
+            case .playlist:
+                resultCollection["type"] = "playlist"
+                break
+            case .station:
+                resultCollection["type"] = "station"
+                break
+            default:
+                resultCollection["type"] = "unknown"
+            }
+
+            return resultCollection
         }
-    }
 
   @available(iOS 16.0, *)
   func convertMusicVideosToDictionary(_ musicVideo: MusicVideo) -> [String: Any] {
