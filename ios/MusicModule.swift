@@ -335,30 +335,21 @@ class MusicModule: RCTEventEmitter {
 
     @available(iOS 16.0, *)
     func convertMusicItemsToDictionary(_ track: RecentlyPlayedMusicItem) -> [String: Any] {
+        var resultCollection: [String: Any] = [
+            "id": String(describing: track.id),
+            "title": track.title,
+            "subtitle": String(describing: track.subtitle ?? "")
+        ]
+        
         switch track {
         case .album:
-            return [
-                "id": String(describing: track.id),
-                "title": track.title,
-                "subtitle": String(describing: track.subtitle ?? ""),
-                "type": "album"
-            ]
+            return resultCollection["type"] = "album"
         case .playlist:
-            return [
-                "id": String(describing: track.id),
-                "title": track.title,
-                "subtitle": String(describing: track.subtitle ?? ""),
-                "type": "playlist"
-            ]
+            return resultCollection["type"] = "playlist"
         case .station:
-            return [
-                "id": String(describing: track.id),
-                "title": track.title,
-                "subtitle": String(describing: track.subtitle ?? ""),
-                "type": "station"
-            ]
+            return resultCollection["type"] = "station"
         default:
-            return ["track": track]
+            return resultCollection["type"] = "unknown"
         }
     }
 
