@@ -439,8 +439,6 @@ class MusicModule: RCTEventEmitter {
     func setPlaybackQueue(_ itemId: String, type: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         Task {
             do {
-                print(itemId, type)
-
                 let musicItemId = MusicItemID.init(itemId)
 
                 if let requestType = MediaType.getRequest(forType: type, musicItemId: musicItemId) {
@@ -451,15 +449,13 @@ class MusicModule: RCTEventEmitter {
 
                         guard let tracksToBeAdded = response.items.first else { return }
 
-                        print("\(type) to be set in queue: \(tracksToBeAdded)")
-
                         let player = SystemMusicPlayer.shared
 
                         player.queue = [tracksToBeAdded] /// <- directly add items to the queue
 
                         try await player.prepareToPlay()
 
-                        resolve(["Track(s) are added to queue"])
+                        resolve("Track(s) are added to queue")
 
                         return
 
@@ -469,15 +465,13 @@ class MusicModule: RCTEventEmitter {
 
                         guard let tracksToBeAdded = response.items.first else { return }
 
-                        print("\(type) to be set in queue: \(tracksToBeAdded)")
-
                         let player = SystemMusicPlayer.shared
 
                         player.queue = [tracksToBeAdded] /// <- directly add items to the queue
 
                         try await player.prepareToPlay()
 
-                        resolve(["Album is added to queue"])
+                        resolve("Album is added to queue")
 
                         return
 
@@ -487,15 +481,13 @@ class MusicModule: RCTEventEmitter {
 
                         guard let tracksToBeAdded = response.items.first else { return }
 
-                        print("\(type) to be set in queue: \(tracksToBeAdded)")
-
                         let player = SystemMusicPlayer.shared
 
                         player.queue = [tracksToBeAdded] /// <- directly add items to the queue
 
                         try await player.prepareToPlay()
 
-                        resolve(["Playlist is added to queue"])
+                        resolve("Playlist is added to queue")
 
                         return
 
@@ -505,15 +497,13 @@ class MusicModule: RCTEventEmitter {
 
                         guard let tracksToBeAdded = response.items.first else { return }
 
-                        print("\(type) to be set in queue: \(tracksToBeAdded)")
-
                         let player = SystemMusicPlayer.shared
 
                         player.queue = [tracksToBeAdded] /// <- directly add items to the queue
 
                         try await player.prepareToPlay()
 
-                        resolve(["Station is added to queue"])
+                        resolve("Station is added to queue")
 
                         return
 
