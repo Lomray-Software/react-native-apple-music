@@ -1,7 +1,6 @@
 import { NativeModules } from 'react-native';
-import type { CatalogSearchType } from '../types/catalog-search-type';
+import type { CatalogSearchType, ICatalogSearch } from '../types/catalog-search';
 import type { MusicItem } from '../types/music-item';
-import type { ISong } from '../types/song';
 import type { ITracksFromLibrary } from '../types/tracks-from-library';
 
 const { MusicModule } = NativeModules;
@@ -23,14 +22,17 @@ class MusicKit {
     search: string,
     types: CatalogSearchType[],
     options?: IEndlessListOptions,
-  ): Promise<ISong[]> {
-    const response: { results: ISong[] } = await MusicModule.catalogSearch(search, types, options);
+  ): Promise<ICatalogSearch | undefined> {
+    try {
+      return (await MusicModule.catalogSearch(search, types, options)) as ICatalogSearch;
+    } catch (error) {
+      console.error('Apple Music Kit: Catalog Search failed.', error);
 
-    if (response.results) {
-      return response.results;
+      return {
+        songs: [],
+        albums: [],
+      };
     }
-
-    return [];
   }
 
   /**
