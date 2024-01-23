@@ -4,7 +4,7 @@ export * from './types/song';
 
 export * from './types/playback-status';
 
-export * from './types/catalog-search-type';
+export * from './types/catalog-search';
 
 export * from './types/auth-status';
 
