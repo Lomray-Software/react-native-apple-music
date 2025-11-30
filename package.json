@@ -1,8 +1,9 @@
 {
   "name": "@lomray/react-native-apple-music",
   "version": "1.0.0",
-  "description": "Apple MusicKit for React-Native",
+  "description": "Apple MusicKit wrapper for React-Native",
   "main": "index.js",
+  "source": "src/index.ts",
   "type": "module",
   "keywords": [
     "js",
@@ -31,7 +32,8 @@
     "lint:check": "eslint --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
     "lint:format": "eslint --fix --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
     "ts:check": "tsc --project ./tsconfig.json --skipLibCheck --noemit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",
@@ -52,6 +54,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.3",
     "jest": "^28.1.1",
+    "patch-package": "^8.0.1",
     "pod-install": "^0.1.0",
     "prettier": "^2.8.8",
     "react": "18.2.0",

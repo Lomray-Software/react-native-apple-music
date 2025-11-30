@@ -64,8 +64,12 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     "resolveJsonModule": true,
     "baseUrl": "./",
+    "paths": {
+      "@lomray/react-native-apple-music": ["../src/index.ts"]
+    },
     "rootDirs": [
-      "./src"
+      "./src",
+      "../src"
     ]
   },
   "include": ["src", "__tests__", "__mocks__", "__helpers__", "*.js", ".*.js", "scripts/**/*"],
