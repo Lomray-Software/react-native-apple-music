@@ -29,4 +29,6 @@ export type { IEndlessListOptions, ILibrarySongsResponse } from './modules/music
 
 export type { PlayerType, IPlayerConfig } from './modules/player';
 
+export { isLibraryItem } from './utils/is-library-item';
+
 export { useCurrentSong, useIsPlaying, usePlaybackTime, Auth, Player, MusicKit };
