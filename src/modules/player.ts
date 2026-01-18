@@ -6,9 +6,24 @@ import type { ISong } from '../types/song';
 
 const { MusicModule } = NativeModules;
 
+/**
+ * Player type options:
+ * - 'system': Uses SystemMusicPlayer - controls the system-wide Apple Music player.
+ *   This is the same player used by the Apple Music app. Changes here affect the system player.
+ * - 'application': Uses ApplicationMusicPlayer - app-specific player that can be configured
+ *   to mix with other audio sources (like react-native-track-player).
+ */
+export type PlayerType = 'system' | 'application';
+
+export interface IPlayerConfig {
+  playerType: PlayerType;
+  mixWithOthers: boolean;
+}
+
 interface IPlayerEvents {
   onPlaybackStateChange: IPlaybackState;
   onCurrentSongChange: ISong;
+  onPlayerTypeChanged: IPlayerConfig;
 }
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);
@@ -19,6 +34,28 @@ class Player {
    */
   public static skipToNextEntry(): void {
     MusicModule.skipToNextEntry();
+  }
+
+  /**
+   * Skips to the previous entry in the playback queue.
+   */
+  public static skipToPreviousEntry(): void {
+    MusicModule.skipToPreviousEntry();
+  }
+
+  /**
+   * Restarts the current entry from the beginning.
+   */
+  public static restartCurrentEntry(): void {
+    MusicModule.restartCurrentEntry();
+  }
+
+  /**
+   * Seeks to a specific time in the current track.
+   * @param {number} time - The time in seconds to seek to.
+   */
+  public static seekToTime(time: number): void {
+    MusicModule.seekToTime(time);
   }
 
   /**
@@ -78,6 +115,37 @@ class Player {
    */
   public static removeAllListeners(eventType: keyof IPlayerEvents): void {
     return nativeEventEmitter.removeAllListeners(eventType);
+  }
+
+  /**
+   * Configures the player type and audio session behavior.
+   *
+   * @param {PlayerType} type - 'system' for SystemMusicPlayer (default) or 'application' for ApplicationMusicPlayer
+   * @param {boolean} mixWithOthers - If true and using 'application' player, allows mixing with other audio sources.
+   *                                  This enables combining Apple Music with react-native-track-player.
+   * @returns {Promise<IPlayerConfig>} The applied configuration
+   *
+   * @example
+   * // Use application player with audio mixing (for combining with track-player)
+   * await Player.configurePlayer('application', true);
+   *
+   * @example
+   * // Use system player (default behavior, controls system Apple Music)
+   * await Player.configurePlayer('system', false);
+   */
+  public static async configurePlayer(
+    type: PlayerType,
+    mixWithOthers = false,
+  ): Promise<IPlayerConfig> {
+    return MusicModule.configurePlayer(type, mixWithOthers);
+  }
+
+  /**
+   * Gets the current player type.
+   * @returns {Promise<PlayerType>} The current player type ('system' or 'application')
+   */
+  public static async getPlayerType(): Promise<PlayerType> {
+    return MusicModule.getPlayerType();
   }
 }
 

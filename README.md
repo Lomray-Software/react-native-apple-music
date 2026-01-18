@@ -20,12 +20,19 @@ The following table shows the platform support for various Apple Music functiona
 | `pause`                | ✅  |
 | `togglePlayerState`    | ✅  |
 | `skipToNextEntry`      | ✅  |
+| `skipToPreviousEntry`  | ✅  |
+| `restartCurrentEntry`  | ✅  |
+| `seekToTime`           | ✅  |
 | `getCurrentState`      | ✅  |
+| `configurePlayer`      | ✅  |
 | `addListener`          | ✅  |
 | `removeListener`       | ✅  |
 | **MusicKit**           |
 | `catalogSearch`        | ✅  |
 | `getTracksFromLibrary` | ✅  |
+| `getUserPlaylists`     | ✅  |
+| `getLibrarySongs`      | ✅  |
+| `getPlaylistSongs`     | ✅  |
 | `setPlaybackQueue`     | ✅  |
 
 ## Installation
@@ -66,6 +73,7 @@ import {
   MusicKit,
   useCurrentSong,
   useIsPlaying,
+  usePlaybackTime,
 } from '@lomray/react-native-apple-music';
 ```
 
@@ -97,17 +105,13 @@ async function checkSubscription() {
 Control playback using the Player module:
 
 ```javascript
-// Play music
 Player.play();
-
-// Pause music
 Player.pause();
-
-// Toggle between play and pause
 Player.togglePlayerState();
-
-// Skip to the next song
 Player.skipToNextEntry();
+Player.skipToPreviousEntry();
+Player.restartCurrentEntry();
+Player.seekToTime(30); // Seek to 30 seconds
 ```
 
 ### Retrieving Playback State
@@ -163,7 +167,6 @@ Get a list of recently played items:
 async function getTracksFromLibrary() {
   try {
     const results = await MusicKit.getTracksFromLibrary();
-    
     console.log('User`s library Results:', results);
   } catch (error) {
     console.error('Getting user tracks failed:', error);
@@ -171,36 +174,57 @@ async function getTracksFromLibrary() {
 }
 ```
 
-
-
-### Set a playback Queue
-Load a system Player with Song, Album, Playlist or Station, using their ID:
+### Accessing User's Library
+Fetch playlists and songs from the user's library:
 
 ```javascript
-async function setPlaybackQueue() {
-  try {
-    await MusicKit.setPlaybackQueue("123456", "album");
-  } catch (error) {
-    console.error('Setting playback queue:', error);
-  }
-}
+// Get user's playlists
+const { playlists } = await MusicKit.getUserPlaylists({ limit: 50 });
+
+// Get songs from user's library
+const { songs } = await MusicKit.getLibrarySongs({ limit: 50 });
+
+// Get songs from a specific playlist
+const { songs } = await MusicKit.getPlaylistSongs(playlistId);
 ```
+
+### Set a playback Queue
+Load the player with Song, Album, Playlist or Station using their ID:
+
+```javascript
+await MusicKit.setPlaybackQueue("123456", "album");
+```
+
+### Player Configuration
+Configure the player type for different use cases:
+
+```javascript
+// Default: System player (controls system-wide Apple Music)
+await Player.configurePlayer('system', false);
+
+// Application player with audio mixing (for use with react-native-track-player)
+await Player.configurePlayer('application', true);
+```
+
+- `'system'`: Controls the system-wide Apple Music player (syncs with Apple Music app)
+- `'application'`: App-specific player that can mix with other audio sources
 
 ### Using Hooks
 The package provides hooks for reactive states in your components:
 
 ```javascript
-import React from 'react';
-import { View } from 'react-native';
-import { useCurrentSong, useIsPlaying } from '@lomray/react-native-apple-music';
+import { useCurrentSong, useIsPlaying, usePlaybackTime } from '@lomray/react-native-apple-music';
 
 function MusicPlayerComponent() {
   const { song } = useCurrentSong();
   const { isPlaying } = useIsPlaying();
+  const { currentTime, duration, progress, seekTo } = usePlaybackTime();
 
   return (
     <View>
-      {isPlaying ? 'Playing' : 'Paused'} - {currentSong?.title || 'No song playing'}
+      <Text>{song?.title || 'No song playing'}</Text>
+      <Text>{isPlaying ? 'Playing' : 'Paused'}</Text>
+      <Text>{currentTime}s / {duration}s</Text>
     </View>
   );
 }

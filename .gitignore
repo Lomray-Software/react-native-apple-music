@@ -10,6 +10,7 @@ node_modules
 example/ios/Pods
 example/ios/Podfile.lock
 example/ios/.xcode.env.local
+example/ios/AppleMusicExample.xcworkspace/xcuserdata/
 build
 lib
 cache
