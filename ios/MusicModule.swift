@@ -14,6 +14,7 @@ class MusicModule: RCTEventEmitter {
   private var queueObservation: AnyCancellable?
   private var stateObservation: AnyCancellable?
   private var lastReportedPlaybackStatus: MusicKit.MusicPlayer.PlaybackStatus?
+  private var timeUpdateTimer: Timer?
 
   // Use ApplicationMusicPlayer for mixing with other audio sources
   private var player: ApplicationMusicPlayer {
@@ -29,10 +30,11 @@ class MusicModule: RCTEventEmitter {
   deinit {
     stateObservation?.cancel()
     queueObservation?.cancel()
+    stopPlaybackTimeStream()
   }
 
   override func supportedEvents() -> [String]! {
-    return ["onPlaybackStateChange", "onCurrentSongChange"]
+    return ["onPlaybackStateChange", "onCurrentSongChange", "onPlaybackTimeUpdate"]
   }
 
   override func startObserving() {
@@ -45,6 +47,7 @@ class MusicModule: RCTEventEmitter {
     queueObservation?.cancel()
     stateObservation = nil
     queueObservation = nil
+    stopPlaybackTimeStream()
   }
 
   @objc
@@ -84,6 +87,9 @@ class MusicModule: RCTEventEmitter {
   private func startObservingPlaybackState() {
     stateObservation = player.state.objectWillChange.sink { [weak self] _ in
       self?.sendPlaybackStateUpdate()
+    }
+    if player.state.playbackStatus == .playing {
+      startPlaybackTimeStream()
     }
   }
 
@@ -127,7 +133,38 @@ class MusicModule: RCTEventEmitter {
         self.sendEvent(withName: "onPlaybackStateChange", body: playbackInfo)
       }
       lastReportedPlaybackStatus = state.playbackStatus
+      if state.playbackStatus == .playing {
+        startPlaybackTimeStream()
+      } else {
+        stopPlaybackTimeStream()
+      }
     }
+  }
+
+  private func startPlaybackTimeStream() {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self, self.timeUpdateTimer == nil else { return }
+      self.timeUpdateTimer = Timer.scheduledTimer(
+        withTimeInterval: 0.5,
+        repeats: true
+      ) { [weak self] _ in
+        self?.sendPlaybackTimeUpdate()
+      }
+      RunLoop.main.add(self.timeUpdateTimer!, forMode: .common)
+    }
+  }
+
+  private func stopPlaybackTimeStream() {
+    DispatchQueue.main.async { [weak self] in
+      self?.timeUpdateTimer?.invalidate()
+      self?.timeUpdateTimer = nil
+    }
+  }
+
+  private func sendPlaybackTimeUpdate() {
+    let time = player.playbackTime
+    let safeTime = time.isNaN ? 0 : time
+    sendEvent(withName: "onPlaybackTimeUpdate", body: ["playbackTime": safeTime])
   }
 
   @objc(getCurrentState:rejecter:)

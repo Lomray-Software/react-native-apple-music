@@ -10,9 +10,14 @@ export interface IPlayerConfig {
   mixWithOthers: boolean;
 }
 
+interface IPlaybackTimeUpdate {
+  playbackTime: number;
+}
+
 interface IPlayerEvents {
   onPlaybackStateChange: IPlaybackState;
   onCurrentSongChange: ISong;
+  onPlaybackTimeUpdate: IPlaybackTimeUpdate;
 }
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);

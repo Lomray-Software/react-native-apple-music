@@ -1,6 +1,8 @@
 # Apple MusicKit for React Native
 
-A react native module for the Apple MusicKit ( [iOS](https://developer.apple.com/musickit/) )
+A react native module for the Apple MusicKit ( [iOS](https://developer.apple.com/musickit/) ).
+
+Supports both the **React Native legacy (bridge) and new architecture**
 
 ## Supported Features
 

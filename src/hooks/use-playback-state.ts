@@ -24,7 +24,7 @@ const usePlaybackState = (): {
       })
       .catch(setError);
 
-    const listener = Player.addListener('onPlaybackStateChange', (next: IPlaybackState) => {
+    const stateListener = Player.addListener('onPlaybackStateChange', (next: IPlaybackState) => {
       setError(undefined);
 
       if (next.playbackTime !== undefined) {
@@ -36,7 +36,16 @@ const usePlaybackState = (): {
       }
     });
 
-    return () => listener.remove();
+    const timeListener = Player.addListener('onPlaybackTimeUpdate', (next: { playbackTime: number }) => {
+      if (next.playbackTime !== undefined) {
+        setPlaybackTime(next.playbackTime);
+      }
+    });
+
+    return () => {
+      stateListener.remove();
+      timeListener.remove();
+    };
   }, []);
 
   return { playbackTime, playbackStatus, error };
