@@ -20,15 +20,15 @@ export * from './types/playlist';
 
 import useCurrentSong from './hooks/use-current-song';
 import useIsPlaying from './hooks/use-is-playing';
-import usePlaybackTime from './hooks/use-playback-time';
+import usePlaybackState from './hooks/use-playback-state';
 import Auth from './modules/auth';
 import MusicKit from './modules/music-kit';
 import Player from './modules/player';
 
 export type { IEndlessListOptions, ILibrarySongsResponse } from './modules/music-kit';
 
-export type { PlayerType, IPlayerConfig } from './modules/player';
+export type { IPlayerConfig } from './modules/player';
 
 export { isLibraryItem } from './utils/is-library-item';
 
-export { useCurrentSong, useIsPlaying, usePlaybackTime, Auth, Player, MusicKit };
+export { useCurrentSong, useIsPlaying, usePlaybackState, Auth, Player, MusicKit };
