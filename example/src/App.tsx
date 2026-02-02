@@ -1,4 +1,4 @@
-import { Auth } from '@lomray/react-native-apple-music';
+import { Auth, getErrorMessage } from '@lomray/react-native-apple-music';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -34,10 +34,15 @@ const AuthScreen: React.FC<{ onAuthorized: () => void }> = ({ onAuthorized }) =>
           setError('Apple Music subscription required');
         }
       } else {
-        setError(`Authorization ${String(status)}`);
+        try {
+          await Auth.checkSubscription();
+          setError(`Authorization: ${String(status)}`);
+        } catch (err) {
+          setError(getErrorMessage(err) as string);
+        }
       }
     } catch (err) {
-      setError('Authorization failed');
+      setError(getErrorMessage(err) as string);
       console.error(err);
     } finally {
       setIsLoading(false);

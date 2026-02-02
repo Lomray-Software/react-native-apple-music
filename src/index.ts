@@ -31,4 +31,6 @@ export type { IPlayerConfig } from './modules/player';
 
 export { isLibraryItem } from './utils/is-library-item';
 
+export { getErrorMessage } from './utils/get-error-message';
+
 export { useCurrentSong, useIsPlaying, usePlaybackState, Auth, Player, MusicKit };

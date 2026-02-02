@@ -2,7 +2,9 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note:** To test this example with Apple Music, you must use your own **bundle ID** that has the **MusicKit capability** enabled in your Apple Developer account. In Xcode, change the example app’s bundle identifier and ensure the MusicKit entitlement is enabled for that bundle ID; otherwise MusicKit APIs will not be authorized.
+
+> Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 

@@ -1,6 +1,5 @@
 import AVFoundation
 import Combine
-// MusicModule.swift
 import Foundation
 import MusicKit
 import React
@@ -25,8 +24,6 @@ class MusicModule: RCTEventEmitter {
 
   override init() {
     super.init()
-    startObservingPlaybackState()
-    startObservingQueueChanges()
   }
 
   deinit {
@@ -36,6 +33,18 @@ class MusicModule: RCTEventEmitter {
 
   override func supportedEvents() -> [String]! {
     return ["onPlaybackStateChange", "onCurrentSongChange"]
+  }
+
+  override func startObserving() {
+    startObservingPlaybackState()
+    startObservingQueueChanges()
+  }
+
+  override func stopObserving() {
+    stateObservation?.cancel()
+    queueObservation?.cancel()
+    stateObservation = nil
+    queueObservation = nil
   }
 
   @objc
@@ -256,28 +265,44 @@ class MusicModule: RCTEventEmitter {
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
-    SKCloudServiceController().requestCapabilities { (capabilities, error) in
-      if let error = error {
-        reject("ERROR", "Failed to get subscription details: \(error)", error)
-        return
+    Task {
+      do {
+        let subscription = try await MusicSubscription.current
+        let subscriptionDetails: [String: Any] = [
+          "canPlayCatalogContent": subscription.canPlayCatalogContent,
+          "canBecomeSubscriber": subscription.canBecomeSubscriber,
+          "hasCloudLibraryEnabled": subscription.hasCloudLibraryEnabled,
+          "isMusicCatalogSubscriptionEligible": subscription
+            .canBecomeSubscriber,
+        ]
+        resolve(subscriptionDetails)
+      } catch {
+        if let subError = error as? MusicSubscription.Error {
+          let code = subError.rawValue
+          // Use Apple's direct localized message so the promise rejects with the exact text from Apple.
+          let message = subError.localizedDescription
+          var userInfo: [String: Any] = [
+            NSLocalizedDescriptionKey: message
+          ]
+          if let reason = subError.failureReason {
+            userInfo[NSLocalizedFailureReasonErrorKey] = reason
+          }
+          if let suggestion = subError.recoverySuggestion {
+            userInfo[NSLocalizedRecoverySuggestionErrorKey] = suggestion
+          }
+          if let anchor = subError.helpAnchor {
+            userInfo[NSHelpAnchorErrorKey] = anchor
+          }
+          let nsError = NSError(
+            domain: "MusicSubscription",
+            code: 0,
+            userInfo: userInfo
+          )
+          reject(code, message, nsError)
+        } else {
+          reject("ERROR", error.localizedDescription, error as NSError)
+        }
       }
-
-      let canPlayCatalogContent = capabilities.contains(.musicCatalogPlayback)
-      let hasCloudLibraryEnabled = capabilities.contains(
-        .addToCloudMusicLibrary
-      )
-      let isMusicCatalogSubscriptionEligible = capabilities.contains(
-        .musicCatalogSubscriptionEligible
-      )
-
-      let subscriptionDetails: [String: Any] = [
-        "canPlayCatalogContent": canPlayCatalogContent,
-        "hasCloudLibraryEnabled": hasCloudLibraryEnabled,
-        "isMusicCatalogSubscriptionEligible":
-          isMusicCatalogSubscriptionEligible,
-      ]
-
-      resolve(subscriptionDetails)
     }
   }
 

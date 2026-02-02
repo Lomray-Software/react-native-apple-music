@@ -4,10 +4,7 @@ import type { IPlaybackState } from '../types/playback-state';
 import { PlaybackStatus } from '../types/playback-status';
 
 /**
- * Custom React hook to track music playback status.
- * It interacts with the native music player via the MusicKit to determine
- * whether music is currently playing and provides a reactive `isPlaying` state.
- * @returns {{ isPlaying: boolean; error?: Error }} The `isPlaying` state indicating whether music is currently playing.
+ * Hook to track whether music is currently playing via native playback state events.
  */
 const useIsPlaying = (): { isPlaying: boolean; error?: Error } => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,7 +19,7 @@ const useIsPlaying = (): { isPlaying: boolean; error?: Error } => {
 
     const listener = Player.addListener('onPlaybackStateChange', (state: IPlaybackState) => {
       setError(undefined);
-      setIsPlaying(state.playbackStatus === PlaybackStatus.PLAYING);
+      setIsPlaying(state?.playbackStatus === PlaybackStatus.PLAYING);
     });
 
     return () => listener.remove();

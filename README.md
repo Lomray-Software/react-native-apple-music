@@ -6,6 +6,8 @@ A react native module for the Apple MusicKit ( [iOS](https://developer.apple.com
 
 An [Example](./example) project was developed to exercise and test all functionality within this library. If you are curious about how to use something, or need to compare your application setup to something that works, check there first.
 
+**To run the example app:** Override the example app with your own **bundle ID** that has the **MusicKit capability** enabled in your Apple Developer account. Replace the bundle identifier in the example’s Xcode project and entitlements with yours; otherwise MusicKit APIs will not be authorized.
+
 ## Features
 
 The following table shows the platform support for various Apple Music functionality within this library.
@@ -92,14 +94,39 @@ async function authenticate() {
 ```
 
 ### Checking Subscription
-Check if the user has an active Apple Music subscription:
+Check the user’s Apple Music subscription capabilities via MusicKit’s `MusicSubscription.current` (async). The response matches the [MusicSubscription](https://developer.apple.com/documentation/musickit/musicsubscription) struct:
 
 ```javascript
+import { Auth, isMusicSubscriptionError } from '@lomray/react-native-apple-music';
+
 async function checkSubscription() {
-  const subscriptionStatus = await Auth.checkSubscription();
-  console.log('Subscription Status:', subscriptionStatus);
+  try {
+    const subscription = await Auth.checkSubscription();
+    if (subscription.canPlayCatalogContent) {
+      console.log('User can play Apple Music catalog');
+    }
+    if (subscription.canBecomeSubscriber) {
+      console.log('App can present subscription offers');
+    }
+    if (subscription.hasCloudLibraryEnabled) {
+      console.log('User has iCloud Music Library enabled');
+    }
+  } catch (error) {
+    // MusicSubscription.Error: code is 'unknown' | 'permissionDenied' | 'privacyAcknowledgementRequired'
+    if (isMusicSubscriptionError(error)) {
+      if (error.code === 'permissionDenied') {
+        console.warn('User denied access to Apple Music data');
+      } else if (error.code === 'privacyAcknowledgementRequired') {
+        console.warn('User must acknowledge the latest Apple Music privacy policy');
+      }
+    } else {
+      console.error('Subscription check failed', error?.message ?? error);
+    }
+  }
 }
 ```
+
+Use `isMusicSubscriptionError(error)` from the package to narrow the error type and access `error.code` safely.
 
 ### Playing Music
 Control playback using the Player module:
@@ -213,12 +240,15 @@ await Player.configurePlayer('application', true);
 The package provides hooks for reactive states in your components:
 
 ```javascript
-import { useCurrentSong, useIsPlaying, usePlaybackTime } from '@lomray/react-native-apple-music';
+import { useCurrentSong, useIsPlaying, usePlaybackState } from '@lomray/react-native-apple-music';
 
 function MusicPlayerComponent() {
   const { song } = useCurrentSong();
   const { isPlaying } = useIsPlaying();
-  const { currentTime, duration, progress, seekTo } = usePlaybackTime();
+  const { playbackTime } = usePlaybackState();
+  const duration = Number(song?.duration ?? 0);
+  const currentTime = playbackTime ?? 0;
+  const progress = duration > 0 ? currentTime / duration : 0;
 
   return (
     <View>
