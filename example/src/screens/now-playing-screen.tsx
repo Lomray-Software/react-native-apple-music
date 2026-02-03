@@ -4,29 +4,82 @@ import {
   useIsPlaying,
   usePlaybackState,
 } from '@lomray/react-native-apple-music';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ProgressBar from '../components/progress-bar';
 import { formatTime } from '../utils/format-time';
 
 const RESTART_THRESHOLD_SECONDS = 3;
 
+const Artwork = React.memo<{ artworkUrl?: string }>(({ artworkUrl }) => {
+  if (artworkUrl) {
+    return <Image source={{ uri: artworkUrl }} style={styles.artwork} />;
+  }
+
+  return (
+    <View style={[styles.artwork, styles.placeholderArtwork]}>
+      <Text style={styles.placeholderText}>No Track</Text>
+    </View>
+  );
+});
+
+const TrackInfo = React.memo<{ title?: string; artistName?: string }>(({ title, artistName }) => (
+  <View style={styles.trackInfo}>
+    <Text style={styles.title} numberOfLines={1}>
+      {title ?? 'Not Playing'}
+    </Text>
+    <Text style={styles.artist} numberOfLines={1}>
+      {artistName ?? 'Select a track to play'}
+    </Text>
+  </View>
+));
+
+const Controls = React.memo<{
+  isPlaying: boolean;
+  onPrevious: () => void;
+  onPlayPause: () => void;
+  onNext: () => void;
+}>(({ isPlaying, onPrevious, onPlayPause, onNext }) => (
+  <View style={styles.controls}>
+    <TouchableOpacity onPress={onPrevious} style={styles.controlButton}>
+      <Text style={styles.controlText}>Prev</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={onPlayPause} style={styles.playButton}>
+      <Text style={styles.playText}>{isPlaying ? 'Pause' : 'Play'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={onNext} style={styles.controlButton}>
+      <Text style={styles.controlText}>Next</Text>
+    </TouchableOpacity>
+  </View>
+));
+
+const TimeDisplay = React.memo<{ currentTime: number; duration: number }>(
+  ({ currentTime, duration }) => (
+    <View style={styles.timeContainer}>
+      <Text style={styles.time}>{formatTime(currentTime)}</Text>
+      <Text style={styles.time}>{formatTime(duration)}</Text>
+    </View>
+  ),
+);
+
 const NowPlayingScreen: React.FC = () => {
   const { song } = useCurrentSong();
   const { isPlaying } = useIsPlaying();
   const { playbackTime } = usePlaybackState();
 
-  const duration = Number(song?.duration ?? 0) || 0;
+  const duration = useMemo(() => Number(song?.duration ?? 0) || 0, [song?.duration]);
   const currentTime = playbackTime ?? 0;
   const progress = duration > 0 ? currentTime / duration : 0;
 
   const handlePrevious = useCallback(() => {
-    if (currentTime > RESTART_THRESHOLD_SECONDS) {
-      Player.restartCurrentEntry();
-    } else {
-      Player.skipToPreviousEntry();
-    }
-  }, [currentTime]);
+    void Player.getCurrentState().then((state) => {
+      if ((state.playbackTime ?? 0) > RESTART_THRESHOLD_SECONDS) {
+        Player.restartCurrentEntry();
+      } else {
+        Player.skipToPreviousEntry();
+      }
+    });
+  }, []);
 
   const handlePlayPause = useCallback(() => {
     Player.togglePlayerState();
@@ -46,43 +99,22 @@ const NowPlayingScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.artworkContainer}>
-        {song?.artworkUrl ? (
-          <Image source={{ uri: song.artworkUrl }} style={styles.artwork} />
-        ) : (
-          <View style={[styles.artwork, styles.placeholderArtwork]}>
-            <Text style={styles.placeholderText}>No Track</Text>
-          </View>
-        )}
+        <Artwork artworkUrl={song?.artworkUrl} />
       </View>
 
-      <View style={styles.trackInfo}>
-        <Text style={styles.title} numberOfLines={1}>
-          {song?.title ?? 'Not Playing'}
-        </Text>
-        <Text style={styles.artist} numberOfLines={1}>
-          {song?.artistName ?? 'Select a track to play'}
-        </Text>
-      </View>
+      <TrackInfo title={song?.title} artistName={song?.artistName} />
 
       <View style={styles.progressContainer}>
         <ProgressBar progress={progress} onSeek={handleSeek} />
-        <View style={styles.timeContainer}>
-          <Text style={styles.time}>{formatTime(currentTime as number)}</Text>
-          <Text style={styles.time}>{formatTime(duration)}</Text>
-        </View>
+        <TimeDisplay currentTime={currentTime} duration={duration} />
       </View>
 
-      <View style={styles.controls}>
-        <TouchableOpacity onPress={handlePrevious} style={styles.controlButton}>
-          <Text style={styles.controlText}>Prev</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlePlayPause} style={styles.playButton}>
-          <Text style={styles.playText}>{isPlaying ? 'Pause' : 'Play'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext} style={styles.controlButton}>
-          <Text style={styles.controlText}>Next</Text>
-        </TouchableOpacity>
-      </View>
+      <Controls
+        isPlaying={isPlaying}
+        onPrevious={handlePrevious}
+        onPlayPause={handlePlayPause}
+        onNext={handleNext}
+      />
     </View>
   );
 };

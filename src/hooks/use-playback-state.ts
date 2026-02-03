@@ -36,11 +36,14 @@ const usePlaybackState = (): {
       }
     });
 
-    const timeListener = Player.addListener('onPlaybackTimeUpdate', (next: { playbackTime: number }) => {
-      if (next.playbackTime !== undefined) {
-        setPlaybackTime(next.playbackTime);
-      }
-    });
+    const timeListener = Player.addListener(
+      'onPlaybackTimeUpdate',
+      (next: { playbackTime: number }) => {
+        if (next.playbackTime !== undefined) {
+          setPlaybackTime(next.playbackTime);
+        }
+      },
+    );
 
     return () => {
       stateListener.remove();
