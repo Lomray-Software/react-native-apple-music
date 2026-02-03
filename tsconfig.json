@@ -11,14 +11,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "isolatedModules": true,
-    "lib": [
-      "es6",
-      "es2015",
-      "es2017",
-      "es2019",
-      "dom",
-      "webworker"
-    ],
+    "lib": ["es6", "es2015", "es2017", "es2019", "dom", "webworker"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -40,6 +33,7 @@
     "node_modules",
     "lib",
     "scripts",
+    "example",
     "commitlint.config.js",
     "rollup.config.mjs"
   ]

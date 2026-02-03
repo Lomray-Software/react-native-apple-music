@@ -20,7 +20,7 @@ jobs:
       - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
       - name: Install dependencies
-        run: npm i --ignore-scripts
+        run: npm i --ignore-scripts --legacy-peer-deps
 
       - name: Run eslint
         run: npm run lint:check

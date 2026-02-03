@@ -23,23 +23,14 @@ class Auth {
   }
 
   /**
-   * Checks the user's subscription status for Apple Music.
-   * @returns {Promise<ICheckSubscription>} A promise that resolves to the subscription status.
+   * Checks the user's subscription status for Apple Music via MusicSubscription.current.
+   * @returns {Promise<ICheckSubscription>} A promise that resolves to the subscription capabilities.
+   * @throws {MusicSubscriptionError} On failure. Error.code is one of: 'unknown' | 'permissionDenied' | 'privacyAcknowledgementRequired'. Use isMusicSubscriptionError() to narrow.
    */
   public static async checkSubscription(): Promise<ICheckSubscription> {
-    try {
-      const result: ICheckSubscription = await MusicModule.checkSubscription();
+    const result: ICheckSubscription = await MusicModule.checkSubscription();
 
-      return result;
-    } catch (error) {
-      console.error('Apple Music Kit: Check subscription failed.', error);
-
-      return {
-        canPlayCatalogContent: false,
-        hasCloudLibraryEnabled: false,
-        isMusicCatalogSubscriptionEligible: false,
-      };
-    }
+    return result;
   }
 }
 

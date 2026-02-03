@@ -1,13 +1,19 @@
 import { NativeModules } from 'react-native';
 import type { CatalogSearchType, ICatalogSearch } from '../types/catalog-search';
 import type { MusicItem } from '../types/music-item';
+import type { IPlaylistsResponse, IPlaylistSongsResponse } from '../types/playlist';
+import type { ISong } from '../types/song';
 import type { ITracksFromLibrary } from '../types/tracks-from-library';
 
 const { MusicModule } = NativeModules;
 
-interface IEndlessListOptions {
+export interface IEndlessListOptions {
   offset?: number;
   limit?: number;
+}
+
+export interface ILibrarySongsResponse {
+  songs: ISong[];
 }
 
 class MusicKit {
@@ -63,6 +69,96 @@ class MusicKit {
       return {
         recentlyPlayedItems: [],
       };
+    }
+  }
+
+  /**
+   * Get user's playlists from their library
+   * @param {IEndlessListOptions} [options] - Pagination options
+   * @return {Promise<IPlaylistsResponse>} A promise that resolves to the user's playlists
+   */
+  public static async getUserPlaylists(options?: IEndlessListOptions): Promise<IPlaylistsResponse> {
+    try {
+      const result = await MusicModule.getUserPlaylists(options ?? {});
+
+      return result as IPlaylistsResponse;
+    } catch (error) {
+      console.error('Apple Music Kit: Getting user playlists failed.', error);
+
+      return {
+        playlists: [],
+      };
+    }
+  }
+
+  /**
+   * Get songs from the user's library
+   * @param {IEndlessListOptions} [options] - Pagination options
+   * @return {Promise<ILibrarySongsResponse>} A promise that resolves to the library songs
+   */
+  public static async getLibrarySongs(
+    options?: IEndlessListOptions,
+  ): Promise<ILibrarySongsResponse> {
+    try {
+      const result = await MusicModule.getLibrarySongs(options ?? {});
+
+      return result as ILibrarySongsResponse;
+    } catch (error) {
+      console.error('Apple Music Kit: Getting library songs failed.', error);
+
+      return {
+        songs: [],
+      };
+    }
+  }
+
+  /**
+   * Get songs from a specific playlist
+   * @param {string} playlistId - The ID of the playlist
+   * @param {IEndlessListOptions} [options] - Pagination options
+   * @return {Promise<IPlaylistSongsResponse>} A promise that resolves to the playlist songs
+   */
+  public static async getPlaylistSongs(
+    playlistId: string,
+    options?: IEndlessListOptions,
+  ): Promise<IPlaylistSongsResponse> {
+    try {
+      const result = await MusicModule.getPlaylistSongs(playlistId, options ?? {});
+
+      return result as IPlaylistSongsResponse;
+    } catch (error) {
+      console.error('Apple Music Kit: Getting playlist songs failed.', error);
+
+      return {
+        songs: [],
+      };
+    }
+  }
+
+  /**
+   * Play a song from the user's library
+   * @param {string} songId - The library song ID (usually starts with 'l.')
+   * @return {Promise<void>}
+   */
+  public static async playLibrarySong(songId: string): Promise<void> {
+    try {
+      await MusicModule.playLibrarySong(songId);
+    } catch (error) {
+      console.error('Apple Music Kit: Playing library song failed.', error);
+    }
+  }
+
+  /**
+   * Play a playlist from the user's library
+   * @param {string} playlistId - The library playlist ID
+   * @param {number} [startingAt=-1] - Index of the song to start playing from (-1 for beginning)
+   * @return {Promise<void>}
+   */
+  public static async playLibraryPlaylist(playlistId: string, startingAt = -1): Promise<void> {
+    try {
+      await MusicModule.playLibraryPlaylist(playlistId, startingAt);
+    } catch (error) {
+      console.error('Apple Music Kit: Playing library playlist failed.', error);
     }
   }
 }

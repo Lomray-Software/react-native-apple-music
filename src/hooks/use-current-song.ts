@@ -5,9 +5,7 @@ import type { ISong } from '../types/song';
 
 /**
  * A hook to track the currently playing song from Apple Music.
- * It listens for changes from the native music player and updates the `currentSong` state accordingly.
- *
- * @returns {{ song?: ISong; error?: Error }} The `song` state indicating the current song details or null if no song is playing.
+ * Listens for changes from the native music player and updates the currentSong state.
  */
 const useCurrentSong = (): { song?: ISong; error?: Error } => {
   const [currentSong, setCurrentSong] = useState<ISong>();
