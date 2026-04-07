@@ -44,7 +44,17 @@ final class MusicModule: RCTEventEmitter {
   // MARK: - RCTEventEmitter Overrides
 
   override func supportedEvents() -> [String]! {
-    ["onPlaybackStateChange", "onCurrentSongChange", "onPlaybackTimeUpdate"]
+    ["onPlaybackStateChange", "onCurrentSongChange", "onPlaybackTimeUpdate", "onPlaybackError"]
+  }
+
+  private func emitPlaybackError(_ error: Error, operation: String) {
+    let nsError = error as NSError
+    sendEvent(withName: "onPlaybackError", body: [
+      "message": error.localizedDescription,
+      "code": nsError.code,
+      "domain": nsError.domain,
+      "operation": operation,
+    ])
   }
 
   override func startObserving() {
@@ -115,6 +125,7 @@ final class MusicModule: RCTEventEmitter {
         try await playbackController.play()
       } catch {
         print("[MusicModule] Play failed: \(error)")
+        self.emitPlaybackError(error, operation: "play")
       }
     }
   }
@@ -131,6 +142,7 @@ final class MusicModule: RCTEventEmitter {
         try await playbackController.togglePlayback()
       } catch {
         print("[MusicModule] Toggle playback failed: \(error)")
+        self.emitPlaybackError(error, operation: "togglePlayback")
       }
     }
   }
@@ -142,6 +154,7 @@ final class MusicModule: RCTEventEmitter {
         try await playbackController.skipToNext()
       } catch {
         print("[MusicModule] Skip to next failed: \(error)")
+        self.emitPlaybackError(error, operation: "skipToNext")
       }
     }
   }
@@ -153,6 +166,7 @@ final class MusicModule: RCTEventEmitter {
         try await playbackController.skipToPrevious()
       } catch {
         print("[MusicModule] Skip to previous failed: \(error)")
+        self.emitPlaybackError(error, operation: "skipToPrevious")
       }
     }
   }

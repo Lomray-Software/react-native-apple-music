@@ -14,10 +14,18 @@ interface IPlaybackTimeUpdate {
   playbackTime: number;
 }
 
+export interface IPlaybackError {
+  message: string;
+  code: number;
+  domain: string;
+  operation: 'play' | 'togglePlayback' | 'skipToNext' | 'skipToPrevious';
+}
+
 interface IPlayerEvents {
   onPlaybackStateChange: IPlaybackState;
   onCurrentSongChange: ISong;
   onPlaybackTimeUpdate: IPlaybackTimeUpdate;
+  onPlaybackError: IPlaybackError;
 }
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const nativeEventEmitter = new NativeEventEmitter(MusicModule);
