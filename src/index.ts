@@ -27,7 +27,7 @@ import Player from './modules/player';
 
 export type { IEndlessListOptions, ILibrarySongsResponse } from './modules/music-kit';
 
-export type { IPlayerConfig } from './modules/player';
+export type { IPlayerConfig, IPlaybackError } from './modules/player';
 
 export { isLibraryItem } from './utils/is-library-item';
 
