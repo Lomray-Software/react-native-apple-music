@@ -27,3 +27,6 @@ jobs:
 
       - name: Typescript check
         run: npm run ts:check
+
+      - name: Plugin tests
+        run: npm run test:plugin

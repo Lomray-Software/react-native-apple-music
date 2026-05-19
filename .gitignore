@@ -14,5 +14,6 @@ example/ios/.xcode.env.local
 example/ios/AppleMusicExample.xcworkspace/xcuserdata/
 build
 lib
+expo-plugin-test
 cache
 .env.*

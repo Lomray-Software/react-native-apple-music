@@ -24,6 +24,9 @@
     "url": "https://github.com/Lomray-Software/react-native-apple-music/issues"
   },
   "homepage": "https://github.com/Lomray-Software/react-native-apple-music#readme",
+  "expo": {
+    "plugin": "./app.plugin.js"
+  },
   "author": "Lomray Software",
   "license": "Apache-2.0",
   "scripts": {
@@ -31,15 +34,24 @@
     "release": "npm run build && cd lib && npm publish",
     "lint:check": "eslint --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
     "lint:format": "eslint --fix --ext \".ts,.tsx\" \"src/**/*.{ts,tsx,*.ts,*tsx}\"",
+    "test:plugin": "node --test app.plugin.test.js",
     "ts:check": "tsc --project ./tsconfig.json --skipLibCheck --noemit",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
+  "files": [
+    "app.plugin.js",
+    "lib",
+    "ios",
+    "RNAppleMusic.podspec",
+    "README.md"
+  ],
   "devDependencies": {
     "@babel/core": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
     "@babel/runtime": "^7.23.6",
     "@commitlint/config-conventional": "^17.0.2",
+    "@expo/config-plugins": "^55.0.9",
     "@lomray/eslint-config": "^3.0.0",
     "@lomray/prettier-config": "^1.2.0",
     "@react-native/eslint-config": "^0.72.2",
@@ -70,6 +82,7 @@
     "@types/react": "17.0.74"
   },
   "peerDependencies": {
+    "@expo/config-plugins": ">=9.0.0",
     "react": "*",
     "react-native": ">=0.61"
   },

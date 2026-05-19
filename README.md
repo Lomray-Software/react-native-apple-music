@@ -55,6 +55,34 @@ platform :ios, 15.0
 npx pod-install
 ```
 
+### Expo / EAS
+
+Add the config plugin to your `app.config.ts` (or `app.json`) so prebuild sets `NSAppleMusicUsageDescription` automatically:
+
+```ts
+// app.config.ts
+export default {
+  plugins: [
+    '@lomray/react-native-apple-music',
+    // or with a custom message:
+    [
+      '@lomray/react-native-apple-music',
+      { musicUsageDescription: 'We use Apple Music to import your library.' },
+    ],
+  ],
+};
+```
+
+The plugin only writes `NSAppleMusicUsageDescription` to the generated iOS `Info.plist` when it is missing, unless you pass `musicUsageDescription` to override it. It does **not** modify entitlements.
+
+**Apple Developer (manual):** Enable **MusicKit** under your App ID → **App Services** in the [Apple Developer portal](https://developer.apple.com/account/resources/identifiers/list). Config plugins cannot toggle portal settings.
+
+**Do not add `com.apple.developer.musickit` to entitlements.** That key is not a valid Apple entitlement; provisioning profiles will never include it, and EAS / Xcode signing can fail. See [issue #14](https://github.com/Lomray-Software/react-native-apple-music/issues/14).
+
+For iOS 15+, set your deployment target with [`expo-build-properties`](https://docs.expo.dev/versions/latest/sdk/build-properties/) or `ios.deploymentTarget` in app config if needed. Catalog search still benefits from iOS 16+ as noted below.
+
+**Bare React Native:** The plugin is optional; you can set `NSAppleMusicUsageDescription` in Xcode or your `Info.plist` instead.
+
 ### iOS Requirements
 
 - Ensure your iOS deployment target is 15.0 or higher, as this library relies on the Apple MusicKit, which requires iOS 15.0+.
@@ -65,7 +93,7 @@ npx pod-install
 <string>Allow to continue</string>
 ```
 
-- Ensure that your Apple Developer account has the MusicKit entitlement enabled and the appropriate MusicKit capabilities are set in your app's bundle identifier.
+- In the Apple Developer portal, enable **MusicKit** for your App ID (App Services). Do **not** add `com.apple.developer.musickit` to your entitlements file ([issue #14](https://github.com/Lomray-Software/react-native-apple-music/issues/14)).
 - It's highly recommended to set a minimum deployment target of your application to 16.0 and above, because MusicKit requires it to perform a catalog search and some convertation methods.
 
 ## Linking
