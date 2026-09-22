@@ -1,8 +1,12 @@
 # Apple MusicKit for React Native
 
+Use this package for Apple Music authorization, catalog/library access and playback in an iOS React Native app. It does not provide Android or web playback, and it is not a general-purpose audio-file player.
+
+The examples describe `@lomray/react-native-apple-music@1.4.0`. The package declares React `*` and React Native `>=0.61`; this is not evidence that every matching version or architecture has been tested. Verify the native build and MusicKit behavior on your target iOS device.
+
 A react native module for the Apple MusicKit ( [iOS](https://developer.apple.com/musickit/) ).
 
-Supports both the **React Native legacy (bridge) and new architecture**
+The podspec includes legacy and new-architecture dependency setup. Native compatibility still needs verification with your React Native and Xcode versions.
 
 ## Supported Features
 
@@ -30,7 +34,7 @@ The following table shows the platform support for various Apple Music functiona
 | `getCurrentState`      | ✅  |
 | `configurePlayer`      | ✅  |
 | `addListener`          | ✅  |
-| `removeListener`       | ✅  |
+| `removeAllListeners`   | ✅  |
 | **MusicKit**           |
 | `catalogSearch`        | ✅  |
 | `getTracksFromLibrary` | ✅  |
@@ -47,8 +51,8 @@ npm install @lomray/react-native-apple-music
 
 - In your Podfile, set minimum IOS target for Pod installation:
 
-```sh
-platform :ios, 15.0
+```ruby
+platform :ios, '15.0'
 ```
 
 ```sh
@@ -66,11 +70,11 @@ npx pod-install
 ```
 
 - Ensure that your Apple Developer account has the MusicKit entitlement enabled and the appropriate MusicKit capabilities are set in your app's bundle identifier.
-- It's highly recommended to set a minimum deployment target of your application to 16.0 and above, because MusicKit requires it to perform a catalog search and some convertation methods.
+- The podspec declares iOS 15.0, and `CatalogService` is annotated for iOS 15.0. Library methods such as `getTracksFromLibrary`, `getUserPlaylists`, `getLibrarySongs` and `getPlaylistSongs` are annotated for iOS 16.0. These source annotations are not a native-build compatibility test; verify your deployment target and the methods you use in Xcode and on a device.
 
 ## Linking
 
-As of React Native `> 0.61`, auto linking should work for iOS. There shouldn't be any modifications necessary and it _Should_ work out of the box.
+The package provides a podspec for React Native autolinking. Install pods and rebuild the iOS app after adding it; JavaScript installation alone does not install the native MusicModule. The MusicKit entitlement and usage description above are still required.
 
 ## Usage
 
@@ -87,7 +91,7 @@ import {
   MusicKit,
   useCurrentSong,
   useIsPlaying,
-  usePlaybackTime,
+  usePlaybackState,
 } from '@lomray/react-native-apple-music';
 ```
 
@@ -207,7 +211,7 @@ async function searchCatalog(query) {
 
 ### Getting user's recently played songs or albums
 
-Get a list of recently played items:
+`getTracksFromLibrary` is annotated for iOS 16.0 in the native module. Get a list of recently played items:
 
 ```javascript
 async function getTracksFromLibrary() {
@@ -222,7 +226,7 @@ async function getTracksFromLibrary() {
 
 ### Accessing User's Library
 
-Fetch playlists and songs from the user's library:
+The three methods below are annotated for iOS 16.0 in the native module. Fetch playlists and songs from the user's library:
 
 ```javascript
 // Get user's playlists
@@ -261,16 +265,18 @@ When `mixWithOthers` is `true`, the audio session uses `.mixWithOthers` and `.du
 
 The package provides hooks for reactive states in your components:
 
-```javascript
+<!-- docs-example: music-hooks -->
+```tsx
+import React from 'react';
+import { Text, View } from 'react-native';
 import { useCurrentSong, useIsPlaying, usePlaybackState } from '@lomray/react-native-apple-music';
 
-function MusicPlayerComponent() {
+export default function MusicPlayerComponent() {
   const { song } = useCurrentSong();
   const { isPlaying } = useIsPlaying();
   const { playbackTime } = usePlaybackState();
   const duration = Number(song?.duration ?? 0);
   const currentTime = playbackTime ?? 0;
-  const progress = duration > 0 ? currentTime / duration : 0;
 
   return (
     <View>
@@ -283,6 +289,8 @@ function MusicPlayerComponent() {
   );
 }
 ```
+
+The hooks remove their own event listeners on unmount. For listeners you add yourself, retain the returned subscription and call `.remove()` on cleanup. `Player.removeAllListeners` affects every listener for that event, including other components.
 
 ## Bugs and feature requests
 
