@@ -1,0 +1,28 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "react-native-apple-music",
+  "description": "iOS Apple MusicKit authorization, library access and playback for React Native.",
+  "branch": "prod",
+  "folders": [],
+  "excludeFolders": [
+    "node_modules",
+    "src",
+    "lib",
+    "example",
+    "__tests__",
+    "__mocks__",
+    "__helpers__",
+    "scripts",
+    ".github"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md"
+  ],
+  "rules": [
+    "Examples target 1.4.0 on iOS with MusicKit entitlement, usage description and installed pods; no Android or web implementation.",
+    "Use usePlaybackState, not usePlaybackTime. Remove subscriptions returned by Player.addListener when no longer needed."
+  ]
+}
